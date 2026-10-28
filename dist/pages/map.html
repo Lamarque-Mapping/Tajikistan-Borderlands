@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>UNDP | Tajikistan–Kyrgyzstan maps</title>
+<link href="vendor/leaflet.css" rel="stylesheet"/>
+<link href="vendor/MarkerCluster.css" rel="stylesheet"/>
+<style>
+:root{--ink:#111827;--muted:#4b5563;--line:rgba(17,24,39,.16);--paper:rgba(255,255,255,.95)}
+html,body,#map{height:100%;width:100%;margin:0;background:#111827;font-family:Arial,Helvetica,sans-serif}
+#map{position:absolute;inset:0}
+.panel{position:absolute;top:18px;right:18px;width:340px;max-height:calc(100vh - 36px);overflow-y:auto;z-index:2000;background:var(--paper);border-radius:14px;box-shadow:0 8px 26px rgba(0,0,0,.34);color:var(--ink);padding:14px 14px 12px;backdrop-filter:blur(4px)}
+.title{font-size:18px;font-weight:850;line-height:1.2;margin-bottom:3px}
+.subtitle{font-size:12px;color:var(--muted);margin-bottom:10px}
+.section-title{margin:11px 0 6px;font-size:10px;font-weight:850;color:#374151;letter-spacing:.06em;text-transform:uppercase}
+.preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.preset-grid button{box-sizing:border-box;display:flex;align-items:center;min-height:48px;min-width:0;border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 10px;font-size:12px;font-weight:750;line-height:1.25;color:var(--ink);cursor:pointer;text-align:left}
+.preset-grid button[data-preset="analysis"]{grid-column:1/-1;min-height:40px}
+.preset-grid button:not(.active):not(:disabled):hover{background:#edf3ef;border-color:#8da79a}
+.preset-grid button:focus-visible{outline:2px solid #176b65;outline-offset:2px}
+.preset-grid button.active{background:var(--ink);color:#fff}
+.preset-grid button:disabled{cursor:not-allowed;color:#9ca3af;background:#f3f4f6;border-color:rgba(17,24,39,.08)}
+#legend{font-size:11.5px;color:var(--ink)}
+.legend-row{display:flex;align-items:center;gap:7px;margin:5px 0;line-height:1.25}
+.swatch-line{display:inline-block;width:23px;height:0;border-top:2px solid #000;flex:0 0 auto}
+.swatch-dash{display:inline-block;width:23px;height:0;border-top:2px dashed #111827;flex:0 0 auto}
+.swatch-dot{display:inline-block;width:10px;height:10px;border-radius:999px;border:1.5px solid #fff;box-shadow:0 0 0 1px rgba(17,24,39,.5);flex:0 0 auto}
+.cluster-swatch{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border:2px solid #fff;border-radius:999px;box-shadow:0 0 0 1px rgba(17,24,39,.55);font-size:8px;font-weight:900;color:#fff;flex:0 0 auto}
+.service-cluster-wrap,.acled-cluster-wrap{background:transparent!important;border:0!important}
+.service-cluster-pie,.acled-cluster-pie{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;border:3px solid rgba(255,255,255,.98);box-shadow:0 2px 8px rgba(0,0,0,.65);color:#fff;font-size:11px;font-weight:900;text-shadow:0 1px 2px #000}
+.leaflet-marker-icon.service-cluster-wrap,.leaflet-marker-icon.acled-cluster-wrap{z-index:1700!important;pointer-events:auto!important}
+.leaflet-markercluster-spider-leg{stroke:#111827;stroke-width:1.2;stroke-opacity:.5}
+.acled-filters{display:none;margin-top:10px;padding-top:8px;border-top:1px solid rgba(17,24,39,.12)}
+.filter-label{margin:7px 0 4px;font-size:9.5px;font-weight:850;color:#4b5563;text-transform:uppercase;letter-spacing:.05em}
+.filter-pills{display:flex;flex-wrap:wrap;gap:4px}
+.filter-pill{display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(17,24,39,.16);background:#fff;border-radius:999px;padding:4px 7px;font-size:9.5px;font-weight:750;color:#111827;cursor:pointer}
+.filter-pill:not(.active){opacity:.42;background:#f3f4f6}
+.filter-dot{width:7px;height:7px;border-radius:999px;display:inline-block;flex:0 0 auto}
+.metric-controls{display:none;margin-top:9px;padding:8px;border:1px solid rgba(17,24,39,.12);border-radius:9px;background:rgba(249,250,251,.96)}
+.control-label{display:block;margin-bottom:6px;font-size:9.5px;font-weight:850;color:#4b5563;text-transform:uppercase;letter-spacing:.05em}
+.choice-buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:7px;width:100%}
+.choice-buttons button{width:100%;min-width:0;border:1px solid rgba(17,24,39,.18);border-radius:999px;background:#fff;color:#111827;padding:7px 9px;min-height:32px;font-size:11px;font-weight:750;line-height:1.15;cursor:pointer;text-align:center}
+.choice-buttons button.active{background:#111827;color:#fff;border-color:#111827}
+.choice-buttons button:disabled{cursor:not-allowed;color:#9ca3af;background:#f3f4f6}
+.analysis-select{width:100%;box-sizing:border-box;border:1px solid rgba(17,24,39,.18);border-radius:8px;background:#fff;color:#111827;padding:8px 30px 8px 9px;font-size:11px;font-weight:750;cursor:pointer}
+.analysis-subcontrols{margin-top:8px;padding-top:8px;border-top:1px solid rgba(17,24,39,.10)}
+.context-menu{margin-top:9px;border:1px solid rgba(17,24,39,.12);border-radius:9px;background:rgba(249,250,251,.96);overflow:hidden}
+.context-menu summary{padding:8px 9px;font-size:10.5px;font-weight:850;color:#374151;cursor:pointer;user-select:none;list-style-position:inside}
+.context-options{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;padding:0 9px 9px}
+.context-option{display:flex;align-items:flex-start;gap:5px;font-size:9.5px;font-weight:700;line-height:1.2;color:#374151;cursor:pointer}
+.context-option input{margin:1px 0 0;accent-color:#111827}
+.legend-gradient{width:100%;height:10px;border-radius:999px;border:1px solid rgba(17,24,39,.18);margin:5px 0 2px}
+.legend-scale{display:flex;justify-content:space-between;gap:8px;color:#6b7280;font-size:9.5px}
+.land-class-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;margin-top:5px}
+.land-class-item{display:flex;align-items:center;gap:5px;font-size:9.5px;line-height:1.15}
+.land-swatch{width:9px;height:9px;border:1px solid rgba(17,24,39,.28);border-radius:2px;flex:0 0 auto}
+.source-note{margin-top:8px;padding-top:8px;border-top:1px solid rgba(17,24,39,.12);color:var(--muted);font-size:10.5px;line-height:1.35}
+.credit-note{margin-top:6px;color:#374151;font-size:10.5px;font-weight:700}
+.feature-popup-title{font-weight:850;font-size:13px;margin-bottom:3px;color:var(--ink)}
+.feature-popup-subtitle{font-size:11px;color:#6b7280;margin-bottom:6px}
+.feature-popup-table{border-collapse:collapse;font-size:11px;max-width:310px}
+.feature-popup-table th{text-align:left;vertical-align:top;color:var(--muted);padding:2px 8px 2px 0;font-weight:750;white-space:nowrap}
+.feature-popup-table td{padding:2px 0;line-height:1.3}
+.country-label{display:block;transform:translate(-50%,-50%);white-space:nowrap;color:rgba(255,255,255,.96);font-size:15px;font-weight:900;letter-spacing:.14em;text-shadow:0 1px 3px #000,0 0 5px #000;pointer-events:none}
+.admin-label{display:block;transform:translate(-50%,-50%);white-space:nowrap;color:#111827;font-size:10px;font-weight:800;text-shadow:-1px -1px 0 #fff,1px -1px 0 #fff,-1px 1px 0 #fff,1px 1px 0 #fff;pointer-events:none}
+.admin3-label{font-size:9px;font-weight:700;color:#374151}
+.town-symbol{display:flex;align-items:center;justify-content:center;background:#0f172a;border:2px solid rgba(255,255,255,.98);box-shadow:0 1px 5px rgba(0,0,0,.7);transform:rotate(45deg);border-radius:3px}
+.town-symbol.city{width:14px;height:14px;background:#075985}
+.town-symbol.town{width:11px;height:11px;background:#0f766e}
+.town-core{width:4px;height:4px;border-radius:999px;background:#fff;display:block}
+.town-symbol .town-core{transform:rotate(-45deg)}
+.leaflet-point-pane .leaflet-marker-icon.town-marker{cursor:pointer!important;pointer-events:auto!important}
+.leaflet-marker-icon.town-marker:hover .town-symbol,.leaflet-marker-icon.town-marker:focus .town-symbol{filter:brightness(1.16);box-shadow:0 2px 8px rgba(0,0,0,.84)}
+.crossing-icon{display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid rgba(255,255,255,.98);box-shadow:0 1px 5px rgba(0,0,0,.72);font-size:8px;font-weight:900;line-height:1}
+.crossing-primary{width:15px;height:15px;background:#ef4444;transform:rotate(45deg);border-radius:2px}.crossing-primary span{transform:rotate(-45deg)}
+.crossing-secondary{width:14px;height:14px;background:#2563eb;border-radius:3px}
+.crossing-tertiary{width:13px;height:13px;background:#7c3aed;border-radius:999px}
+.crossing-other{width:10px;height:10px;background:#111827;border-radius:999px}
+.infra-symbol{display:flex;align-items:center;justify-content:center;width:18px;height:18px;border:2px solid rgba(255,255,255,.98);box-shadow:0 1px 6px rgba(0,0,0,.76);color:#fff;font-size:10px;font-weight:900;line-height:1}
+.infra-power{background:#eab308;color:#111827;border-radius:999px}
+.infra-airport{background:#7c3aed;border-radius:3px;transform:rotate(45deg)}.infra-airport span{transform:rotate(-45deg)}
+.infra-port{background:#0284c7;border-radius:999px}
+.infra-unhcr{background:#0f766e;border-radius:4px}
+.leaflet-tooltip.town-tip{background:rgba(255,255,255,.94);border:1px solid rgba(17,24,39,.18);box-shadow:0 2px 7px rgba(0,0,0,.28);color:#111827;font-size:10px;font-weight:800;padding:3px 6px}
+.leaflet-popup-content-wrapper{border-radius:11px}.leaflet-popup-content{margin:10px 12px}
+#wbInfoOpenBox{margin-top:10px;padding-top:10px;border-top:1px solid rgba(17,24,39,.12)}
+#wbOpenSourcesButton{width:100%;box-sizing:border-box;border:1px solid rgba(17,24,39,.16);border-radius:9px;background:rgba(255,255,255,.96);color:#111827;cursor:pointer;font-size:12px;font-weight:800;line-height:1.15;padding:8px 9px;text-align:center;box-shadow:0 1px 3px rgba(15,23,42,.10)}
+#wbOpenSourcesButton:hover,#wbOpenSourcesButton.wb-sources-open{background:#111827;border-color:#111827;color:#fff}
+#wbSourcesOverlay{position:fixed;inset:0;z-index:6000;display:none;background:rgba(15,23,42,.82);backdrop-filter:blur(2px)}
+#wbSourcesOverlay.wb-visible{display:block}
+#wbSourcesShell{position:absolute;left:34px;right:34px;top:30px;bottom:30px;background:rgba(255,255,255,.985);border-radius:16px;border:1px solid rgba(255,255,255,.55);box-shadow:0 24px 70px rgba(0,0,0,.45);display:flex;flex-direction:column;overflow:hidden}
+#wbSourcesHeader{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(17,24,39,.12);background:#fff}
+#wbSourcesHeaderTitle{font-size:15px;font-weight:900;letter-spacing:.035em;text-transform:uppercase;color:#111827}
+#wbSourcesClose{border:1px solid rgba(17,24,39,.18);background:#fff;color:#111827;border-radius:999px;width:34px;height:34px;line-height:26px;font-size:23px;font-weight:850;cursor:pointer}
+#wbSourcesClose:hover{background:#111827;border-color:#111827;color:#fff}
+#wbSourcesContent{flex:1 1 auto;overflow:auto;padding:18px 24px 30px;color:#111827;font-size:13px;line-height:1.48}
+#wbSourcesContent h2{font-size:20px;line-height:1.2;margin:0 0 12px}
+#wbSourcesContent h3{font-size:15px;margin:20px 0 7px}
+#wbSourcesContent p{margin:0 0 11px}
+.wb-sources-table-wrap{width:100%;overflow-x:auto;margin:12px 0 18px;border:1px solid rgba(17,24,39,.12);border-radius:10px}
+.wb-sources-table{width:100%;border-collapse:collapse;font-size:12px;min-width:980px}
+.wb-sources-table th{text-align:left;vertical-align:top;padding:8px 9px;background:rgba(17,24,39,.07);border-bottom:1px solid rgba(17,24,39,.14);font-weight:850}
+.wb-sources-table td{vertical-align:top;padding:8px 9px;border-top:1px solid rgba(17,24,39,.08)}
+.wb-boundary-disclaimer{margin-top:12px;padding:10px 12px;border:1px solid rgba(17,24,39,.12);border-radius:9px;background:#f9fafb}
+@media(max-width:760px){.panel{left:10px;right:10px;top:auto;bottom:10px;width:auto;max-height:44vh}.country-label{font-size:12px}.preset-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){#wbSourcesShell{left:10px;right:10px;top:10px;bottom:10px;border-radius:12px}#wbSourcesContent{padding:14px 14px 24px}}
+
+:root{--project-ink:#193932;--project-line:#d8e2de}
+.panel{box-sizing:border-box;top:14px;right:14px;width:338px;max-height:calc(100vh - 28px)}
+.choice-buttons{grid-template-columns:1fr 1fr}.choice-buttons button{border-radius:7px}
+#projectPanel{position:absolute;top:14px;bottom:14px;left:14px;width:316px;z-index:2100;background:#fffffff7;border:1px solid var(--project-line);border-radius:13px;box-shadow:0 8px 30px #0003;display:flex;flex-direction:column;overflow:hidden;color:#173c34}
+.project-head{padding:16px 16px 10px;border-bottom:1px solid var(--project-line)}.project-head h2{font-size:18px;margin:0 0 4px}.project-head p{font-size:11px;line-height:1.4;color:#596b65;margin:0 0 9px}.project-filters{display:grid;grid-template-columns:1fr 1fr;gap:7px}.project-filters label{font-size:10px;color:#51625b;font-weight:700}.project-filters input,.project-filters select{box-sizing:border-box;margin-top:3px;display:block;width:100%;min-width:0;padding:7px;border:1px solid #c8d6ce;border-radius:6px;background:#fff;color:#183c34;font-size:11px}.project-filters .wide{grid-column:1/-1}.project-summary{font-size:11px;line-height:1.4;margin:10px 0 4px;font-weight:700}.project-actionbar{display:flex;gap:8px;align-items:center}.project-actionbar button,.project-detail button,#projectMore{border:1px solid #bdcfc5;border-radius:6px;background:#fff;color:#193932;padding:6px 8px;font-size:10px;font-weight:700;cursor:pointer}.project-actionbar label{font-size:10px;display:flex;gap:5px;align-items:center}.project-actionbar input{accent-color:#193932}.project-list{flex:1;overflow:auto;padding:4px 12px 12px}.project-row{display:block;text-align:left;border:0;border-bottom:1px solid #dde5e0;background:transparent;width:100%;padding:11px 3px;cursor:pointer;color:#193932}.project-row:hover,.project-row:focus-visible{background:#edf3ef}.project-name{font-size:12px;font-weight:800;line-height:1.35;display:block}.project-org{display:block;font-size:10px;color:#586a61;margin:4px 0}.project-tags{display:flex;gap:4px;flex-wrap:wrap}.project-tag{font-size:9px;padding:3px 5px;background:#edf3ef;border-radius:4px;line-height:1.2}.project-scope{font-size:9px;color:#68776f;display:block;margin-top:5px}.project-empty{font-size:12px;padding:20px 3px;line-height:1.5;color:#5d6e65}.project-foot{padding:8px 13px;border-top:1px solid #d8e2de;font-size:9px;color:#627168;line-height:1.4;background:#f7faf8}.project-detail{display:none;position:absolute;inset:0;z-index:3;background:white;overflow:auto;padding:16px;box-sizing:border-box}.project-detail h3{font-size:17px;line-height:1.3;margin:13px 0 7px}.project-detail p{font-size:11px;line-height:1.55;overflow-wrap:anywhere}.project-detail h4{font-size:12px;margin:17px 0 6px}.project-detail a{color:#186c85;overflow-wrap:anywhere}.project-detail ul{padding-left:18px;font-size:11px;line-height:1.55}.project-location{width:100%;text-align:left;margin-bottom:5px;line-height:1.4}.project-pin-wrap,.project-cluster-wrap{background:none!important;border:0!important}.project-pin{width:17px;height:17px;border:3px solid white;border-radius:50%;box-shadow:0 0 0 1px #18382e,0 2px 5px #0007;box-sizing:border-box}.project-pin.area{background:white!important;border:3px solid var(--outcome);border-radius:3px;transform:rotate(45deg)}.project-cluster{width:39px;height:39px;border:3px solid white;border-radius:50%;display:grid;place-items:center;box-shadow:0 2px 7px #0007;box-sizing:border-box}.project-cluster span{display:grid;place-items:center;border-radius:50%;width:24px;height:24px;background:#fff;font:bold 11px Arial;color:#183c34}.project-legend{font-size:10px;margin:9px 0;line-height:1.5}.project-legend-row{display:flex;gap:7px;align-items:center;margin:5px 0}.project-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}.project-note{background:#f4f7f3;border-left:3px solid #607b63;padding:8px;font-size:10px;line-height:1.5;margin-top:9px}.map-nav{display:flex;gap:9px;margin:12px 0 3px;font-size:11px}.map-nav a{color:#25594b;font-weight:bold;text-decoration:none}.mobile-tabs{display:none}#viewLoading{position:absolute;top:15px;left:50%;transform:translateX(-50%);z-index:4500;background:#fff;border-radius:7px;padding:9px 14px;font-size:12px;box-shadow:0 3px 15px #0004;display:block;max-width:40%;color:#123c32}.town-marker{display:flex!important;align-items:center;justify-content:center;min-width:28px;min-height:28px;pointer-events:auto!important}
+@media(min-width:1025px){.leaflet-top.leaflet-left{left:344px}.leaflet-control-attribution{max-width:calc(100vw - 355px)}}
+@media(max-width:999px){#projectPanel{width:285px}.panel{width:280px}.leaflet-top.leaflet-left{left:305px}}
+@media(max-width:1024px){.mobile-tabs{display:flex;position:absolute;bottom:8px;left:10px;right:10px;z-index:4200;gap:7px}.mobile-tabs button{flex:1;background:#183d35;color:white;border:1px solid #fff7;border-radius:8px;padding:11px;font:bold 12px Arial;box-shadow:0 3px 12px #0004}.panel,#projectPanel{display:none;left:10px;right:10px;top:auto;bottom:57px;width:auto;max-height:55vh;height:auto}.panel.mobile-open{display:block}#projectPanel.mobile-open{display:flex;height:55vh}.project-head{padding:11px}.project-head p{display:none}.project-list{min-height:60px}.leaflet-top.leaflet-left{left:0}.leaflet-control-attribution{max-width:100%;margin-bottom:51px!important;font-size:8px}#viewLoading{top:12px;max-width:70%}.project-detail{padding:13px}}
+
+#directoryToggle{position:absolute;left:344px;bottom:16px;z-index:2200;border:1px solid #b9cfc2;border-radius:7px;background:#fff;color:#193932;padding:9px 12px;font:bold 12px Arial;box-shadow:0 3px 12px #0003;cursor:pointer}
+#directoryToggle[hidden]{display:none}
+.directory-hidden #projectPanel{display:none}.directory-hidden #directoryToggle{left:14px}.directory-hidden .leaflet-top.leaflet-left{left:0}
+@media(max-width:1024px){#directoryToggle{display:none}}
+
+.project-filters{border:0;padding:0;margin:0;min-width:0}
+.project-head{flex-shrink:0}.project-content{position:relative;flex:1;min-height:0;overflow:hidden}.project-list{height:100%;box-sizing:border-box}
+.project-foot{flex-shrink:0}
+@media(max-width:1024px){#projectPanel.mobile-open{height:calc(100vh - 84px);max-height:calc(100vh - 84px)}.project-head{max-height:64%;overflow:auto}}
+
+/* Compact identity cards, following the Burundi development map. */
+.leaflet-tooltip{max-width:min(330px,calc(100vw - 36px));white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+.leaflet-tooltip.project-hover-tooltip{box-sizing:border-box;width:min(320px,calc(100vw - 36px));padding:10px 12px;border:1px solid #cbd8d2;border-radius:8px;background:rgba(255,255,255,.98);box-shadow:0 5px 16px #0003;white-space:normal}
+.project-tooltip-title{font:750 13px/1.35 Arial,sans-serif;letter-spacing:-.08px;color:#193932;overflow-wrap:anywhere}
+.project-tooltip-org{margin-top:5px;font:700 11px/1.35 Arial,sans-serif;color:#176b65;overflow-wrap:anywhere}
+@media(max-width:620px){.leaflet-tooltip.project-hover-tooltip{width:min(280px,calc(100vw - 24px))}}
+/* Export tools stay within the project directory and load only on request. */
+.project-actionbar{flex-wrap:wrap;justify-content:space-between;gap:7px}.project-export-actions{display:flex;gap:5px;align-items:center}.project-actionbar #projectExcel{background:#193f35;color:#fff;border-color:#193f35}.project-actionbar button:disabled{opacity:.5;cursor:default}.project-export-status{font-size:10px;line-height:1.4;color:#536b5e;margin-top:5px}.project-export-status:empty{display:none}.credit-note{margin-top:9px;padding-top:7px;border-top:1px solid #dce3dd;color:#657469;font-size:10px;font-weight:400}
+/* A focused phone layout: one panel at a time, with optional detail. */
+.project-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.project-filter-more>summary,#mobileKey,#mobileMoreViews{display:none}
+@media(max-width:1024px){
+ .mobile-tabs{bottom:0;left:0;right:0;gap:5px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:#f7faf8;border-top:1px solid #cbd8cf;box-sizing:border-box}
+ .mobile-tabs button{min-height:44px;border-radius:8px;background:#eef3ef;color:#193f35;border:1px solid #cbd8cf;box-shadow:none;font-size:14px;padding:10px}
+ .mobile-tabs button[aria-pressed="true"]{background:#193f35;color:white;border-color:#193f35}
+ .panel,#projectPanel{bottom:calc(69px + env(safe-area-inset-bottom));top:10px;max-height:calc(100% - 79px - env(safe-area-inset-bottom));border-radius:12px;background:#fff;backdrop-filter:none}
+ #projectPanel.mobile-open{height:auto;max-height:calc(100% - 79px - env(safe-area-inset-bottom))}
+ .panel .subtitle,.panel .map-nav{display:none}.panel .title{font-size:18px}.panel .section-title{font-size:11px}
+ .preset-grid{gap:7px}.preset-grid button,.choice-buttons button{min-height:44px;font-size:13px;padding:10px}
+
+ #mobileMoreViews{display:none;min-height:44px;width:100%;margin:7px 0;border:1px solid #ccd8d0;background:#f2f6f3;color:#193f35;border-radius:7px;font-weight:700;font-size:13px}
+ .context-menu summary,.context-option,.filter-pill{min-height:44px;box-sizing:border-box;font-size:12px;align-items:center}.context-menu summary{padding:14px 10px}.context-option input{width:18px;height:18px}
+ .project-head{padding:12px;max-height:62%;overflow:auto;overscroll-behavior:contain}.project-head h2{font-size:20px;margin-bottom:10px}
+ .project-filters input,.project-filters select,.analysis-select{font-size:16px;min-height:44px;padding:9px}.project-filters label{font-size:11px}
+ .project-filter-more>summary{display:block;list-style:none;cursor:pointer;min-height:44px;padding:12px 10px;box-sizing:border-box;border:1px solid #ccd8d0;border-radius:7px;background:#f3f7f4;font-size:13px;font-weight:700}
+ .project-filter-more>summary::after{content:' +';float:right}.project-filter-more[open]>summary::after{content:' −'}.project-filter-grid{margin-top:9px;gap:10px}.project-filter-grid>label{grid-column:1/-1}
+ .project-actionbar{gap:7px}.project-export-actions{gap:6px;flex:1;justify-content:flex-end}.project-actionbar button{min-height:44px;padding:9px;font-size:12px}.project-actionbar label{min-height:44px;font-size:12px}.project-actionbar input{width:18px;height:18px}
+ .project-row{padding:14px 4px}.project-name{font-size:14px}.project-org{font-size:12px}.project-tag,.project-scope{font-size:11px}.project-list{min-height:75px}.project-detail p,.project-detail ul{font-size:13px}.project-detail button{min-height:44px;font-size:13px}.project-foot{font-size:10px}
+ #mobileKey{display:block;position:absolute;right:10px;top:10px;max-width:calc(100% - 65px);width:290px;z-index:1800;border:1px solid #ccd8d0;border-radius:9px;background:#fffffff7;color:#193f35;box-shadow:0 3px 12px #0002}
+ #mobileKey:not([open]){width:auto;min-width:58px}#mobileKey>summary{cursor:pointer;padding:13px 15px;font-size:13px;font-weight:700;min-height:44px;box-sizing:border-box}#mobileLegend{padding:0 12px 12px;font-size:11px;max-height:45vh;max-height:45dvh;overflow:auto;overscroll-behavior:contain}
+ .mobile-panel-open #mobileKey{display:none}.leaflet-control-attribution{margin-bottom:calc(68px + env(safe-area-inset-bottom))!important;max-width:100%;font-size:8px}.leaflet-control-zoom a{width:40px!important;height:40px!important;line-height:40px!important}
+ #viewLoading{max-width:calc(100% - 95px);font-size:12px}.project-summary{font-size:11px}
+}
+@media(max-width:390px){.project-actionbar>label{width:100%;min-height:30px}.project-export-actions{justify-content:flex-start;width:100%}.project-export-actions #projectExcel{flex:1}}
+
+/* Stable sidebar: changing content never changes the panel or section positions. */
+.panel{height:calc(100% - 28px);max-height:none;display:grid;grid-template-rows:44px minmax(100px,40fr) minmax(100px,25fr) minmax(60px,22fr) 58px;gap:8px;overflow:hidden;font-family:Arial,Helvetica,sans-serif;backdrop-filter:none;background:rgba(255,255,255,.97)}
+.panel-heading{display:flex;align-items:center;min-width:0}.panel .title{font-size:17px;font-weight:700;line-height:1.25;margin:0}.panel .subtitle{display:none}
+.panel>.preset-grid{align-content:start;grid-auto-rows:42px;gap:6px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding-right:3px;border-bottom:1px solid #d8dfe1;padding-bottom:8px;overflow-anchor:none}
+.preset-grid button{min-height:42px;height:42px;padding:6px 8px;border-radius:6px;font:600 12px/1.2 Arial,Helvetica,sans-serif}
+.preset-grid button:nth-child(-n+2){position:sticky;top:0;z-index:2;box-shadow:0 2px 0 white}.preset-grid button[data-preset="analysis"]{grid-column:auto;min-height:42px}
+.view-options,.map-key{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;overflow-anchor:none;padding-right:3px}.view-options{border-bottom:1px solid #d8dfe1;padding-bottom:8px}.options-heading{font-size:12px;font-weight:700;margin:2px 0 8px}.view-options #viewHint{font-size:11.5px;line-height:1.5;color:#58646b;margin:4px 0 12px}.view-options .metric-controls{margin:0;padding:0;border:0;border-radius:0;background:none}.panel .section-title{margin:1px 0 8px;font-size:10px;font-weight:700;letter-spacing:.05em}
+.environment-control-title{font-size:11px;font-weight:700;color:#4b5563;margin:10px 0 5px}.environment-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.environment-choices button,.choice-buttons button{font:600 11.5px/1.3 Arial,Helvetica,sans-serif;min-height:38px;box-sizing:border-box;padding:7px;border:1px solid #cbd2d8;border-radius:6px;background:white;color:#26333c;cursor:pointer}.environment-choices button[aria-pressed="true"],.choice-buttons button.active{background:#111827;color:white;border-color:#111827}
+.environment-about{margin-top:8px;font-size:11px;color:#4b5563}.environment-about summary{cursor:pointer;padding:6px 0}.environment-about p{font-size:11px;line-height:1.5;margin:4px 0}.metric-title{font-size:12px;font-weight:700;line-height:1.4;margin:6px 0}.legend-classes{display:grid;grid-template-columns:1fr 1fr;gap:0 8px}.legend-classes .legend-row{font-size:11px}.legend-reference{font-size:11px;margin:8px 0}.legend-reference summary{cursor:pointer;padding:5px 0}.scale-note{font-size:11px;color:#58646b;margin:7px 0}.panel-footer{border-top:1px solid #d8dfe1;padding-top:6px;overflow:hidden}.panel-footer .map-nav{margin:0 0 5px}.panel-footer #wbInfoOpenBox{margin:0;padding:0;border:0}.panel-footer #wbOpenSourcesButton{min-height:30px;padding:6px;font-size:11px}.waterpoint-cluster{background:none;border:0}.waterpoint-cluster>span{box-sizing:border-box}
+@media(max-width:1024px){.panel{height:calc(100% - 89px - env(safe-area-inset-bottom));top:10px;bottom:auto;grid-template-rows:40px minmax(85px,32fr) minmax(90px,30fr) minmax(55px,25fr) 38px;gap:6px}.panel:not(.mobile-open){display:none}.panel.mobile-open{display:grid}.panel .preset-grid{grid-auto-rows:44px}.panel .preset-grid button{height:44px;min-height:44px;font-size:12px}.environment-choices button,.choice-buttons button{min-height:44px;font-size:12px}.panel .title{font-size:16px}.panel-footer .map-nav{display:none}.panel-footer #wbOpenSourcesButton{min-height:32px}}
+
+/* Hover cards retain their natural width; popup content stays inside the map. */
+.leaflet-tooltip{width:max-content;max-width:min(330px,calc(100vw - 36px));font-family:Arial,Helvetica,sans-serif}
+.leaflet-popup-content{max-height:calc(100vh - 95px);overflow:auto}.popup-clamped .leaflet-popup-tip-container{display:none}.has-feature-popup .leaflet-tooltip{display:none}
+@media(max-height:600px){.panel{grid-template-rows:32px minmax(0,40fr) minmax(0,27fr) minmax(0,20fr) 34px;gap:6px;padding:10px}.panel-footer .map-nav{display:none}.panel-footer #wbOpenSourcesButton{min-height:28px;padding:5px}}
+
+.theme-label{display:block;font:600 12px/1.4 Arial;margin:0 0 12px}.theme-label select{display:block;margin-top:6px;font:13px/1.4 Arial;padding:9px 28px 9px 9px;min-height:40px}.theme-note{font:11px/1.5 Arial;color:#59676b}.panel>.preset-grid{grid-auto-rows:42px}.panel .options-heading{font-size:13px}.analysis-controls>label{display:none}
+.environment-theme-choices{grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 12px}.environment-theme-choices button{min-height:48px;padding:7px 5px}.environment-theme-choices button:focus-visible{outline:2px solid #237c77;outline-offset:2px}
+
+@media(min-width:1025px) and (min-height:700px){.panel{grid-template-rows:44px 252px minmax(100px,1.3fr) minmax(90px,1fr) 58px}.panel>.preset-grid button{font-size:13px}.environment-choices button,.choice-buttons button{font-size:12px}}
+
+
+.project-wbg{margin:14px 0;border:1px solid #d9e3e8;border-radius:8px;background:#f7fafb}
+.project-wbg>summary{padding:10px 12px;cursor:pointer;font-weight:600;line-height:1.4}
+.project-wbg>summary:focus-visible{outline:2px solid #176b65;outline-offset:2px}
+.project-wbg-operation{padding:0 12px 10px}
+.project-wbg-operation+.project-wbg-operation{border-top:1px solid #d9e3e8;padding-top:10px}
+.project-wbg-operation h4{margin:5px 0;font-size:13px}
+.project-wbg-evidence{margin-top:10px;padding-left:9px;border-left:2px solid #8bb1c1}
+.project-wbg-evidence p{margin:4px 0}
+.project-wbg-meta{color:#526574}
+#eventPanel{box-sizing:border-box;position:absolute;top:14px;bottom:14px;left:14px;width:338px;z-index:2100;display:flex;flex-direction:column;overflow:hidden;border:1px solid #d8dfe5;border-radius:12px;background:#fff;color:#23323d;box-shadow:0 8px 30px #0003;font-family:"Segoe UI",Arial,sans-serif}
+#eventPanel[hidden],#eventDirectoryToggle[hidden],#eventDetail[hidden],#eventAll[hidden],#eventListView[hidden]{display:none!important}
+.event-head{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 9px;flex:none}.event-eyebrow{font-size:12px;letter-spacing:.06em;color:#80505b;margin:0 0 5px}.event-head h2{font-size:22px;letter-spacing:-.025em;line-height:1.2;margin:0;font-weight:650}.event-head>button{border:0;background:#f0f3f5;color:#43525d;width:34px;height:34px;border-radius:50%;font-size:22px;cursor:pointer}.event-period{font-size:12px;color:#61707c;padding:0 18px 13px;flex:none}
+#eventFilters{margin:0;padding:0 18px 13px;border:0;border-bottom:1px solid #e3e7eb;min-width:0;max-height:47%;overflow:auto;overscroll-behavior:contain;flex-shrink:0}#eventFilters label{font-size:14px;line-height:1.4;display:block;color:#465764}#eventFilters input,#eventFilters select{box-sizing:border-box;display:block;width:100%;min-width:0;border:1px solid #c9d2da;border-radius:6px;background:white;color:#263743;font:14px "Segoe UI",Arial,sans-serif;min-height:40px;padding:8px;margin:5px 0 0}#eventFilters input:focus,#eventFilters select:focus{outline:2px solid #536f8c;outline-offset:1px}.event-filter-pair{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}.event-filter-pair select{padding-right:3px}.event-dates input{font-size:13px!important}#eventMoreFilters{margin-top:12px}#eventMoreFilters summary{cursor:pointer;font-size:14px;font-weight:600;min-height:28px;line-height:28px}#eventFilterBadge{font-size:12px;font-weight:400;color:#7d4250}#eventPanel .filter-label{font-size:12px;letter-spacing:0;text-transform:none;margin:13px 0 6px;font-weight:600}#eventPanel .filter-pills{gap:5px}#eventPanel .filter-pill{font:12px/1.35 "Segoe UI",Arial,sans-serif;min-height:32px;padding:6px 9px;border-radius:5px;text-align:left}#eventPanel .filter-pill:not(.active){opacity:1;color:#7c8790;background:#f3f5f6;text-decoration:line-through}#eventPanel .filter-pill.active{background:#eff3f6;border-color:#aabac6}
+.event-summary{padding:12px 18px;display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid #e3e7eb;flex:none}.event-summary p{font-size:13px;line-height:1.5;margin:0}.event-summary strong{font-size:18px;font-weight:650;color:#223d52}.event-summary button,.event-list-heading button,.event-detail-actions button,#eventMore{border:1px solid #cbd4dc;background:#fff;color:#354f63;border-radius:5px;cursor:pointer;font:13px "Segoe UI",Arial,sans-serif;padding:8px 10px;min-height:36px}
+.event-content{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 18px}.event-list-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:14px}.event-list-heading h3{font-size:13px;font-weight:650;margin:0;color:#506473}.event-list-heading button{font-size:12px;white-space:nowrap;min-height:32px;padding:5px 8px}#eventListHint{font-size:12px;line-height:1.5;color:#687782;margin:7px 0 3px}.event-row{display:block;width:100%;background:transparent;border:0;border-bottom:1px solid #e2e7eb;text-align:left;padding:14px 0;color:#283c4b;cursor:pointer}.event-row:hover,.event-row:focus-visible{background:#f0f4f7}.event-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:#65747f;margin-bottom:6px}.event-row-place{display:block;font-size:16px;line-height:1.4;font-weight:650}.event-row-type{display:flex;align-items:center;gap:6px;font-size:13px;line-height:1.5;margin-top:5px}.event-type-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}.event-row-country{font-size:12px;display:block;color:#65747f;margin-top:4px}.event-empty{padding:15px 0;color:#65747f;font-size:14px;line-height:1.6}#eventMore{margin:15px 0;width:100%}
+.event-detail-actions{display:flex;justify-content:space-between;gap:8px;margin:14px 0 20px}.event-detail-kicker{font-size:13px;line-height:1.6;color:#697b89;margin:0 0 7px}.event-detail-type{font-size:20px;line-height:1.3;font-weight:650;letter-spacing:-.02em;margin:0 0 7px}.event-detail-subtype{font-size:14px;color:#687782;margin:0 0 16px}.event-detail-place{font-size:18px;font-weight:650;margin:16px 0 5px}.event-detail-area{font-size:13px;line-height:1.5;color:#65747f;margin:0}.event-detail-fatalities{background:#f6eff1;border-left:3px solid #9b4b59;padding:10px 12px;margin:17px 0;font-size:14px;line-height:1.5}.event-detail-fatalities strong{font-size:20px;font-weight:650}.event-detail-label{font-size:12px;color:#65747f;margin:15px 0 5px;font-weight:600}.event-detail-value,.event-detail-notes{font-size:16px;line-height:1.6;margin:0;overflow-wrap:anywhere}.event-detail-notes{white-space:pre-line}.event-detail-source{border-top:1px solid #e3e7eb;margin:20px 0 16px;padding-top:12px;font-size:12px;line-height:1.5;color:#65747f}.event-foot{flex:none;padding:10px 18px;background:#f6f8fa;border-top:1px solid #e3e7eb;font-size:12px;line-height:1.5;color:#65747f}#eventDirectoryToggle{position:absolute;bottom:16px;left:14px;z-index:2200;border:1px solid #c3ced8;border-radius:6px;padding:10px 14px;background:white;color:#2c465a;font:14px "Segoe UI",Arial,sans-serif;cursor:pointer;box-shadow:0 3px 12px #0003}.event-panel-open #eventDirectoryToggle{left:366px}.event-panel-open .leaflet-top.leaflet-left{left:366px}.event-head button:focus-visible,.event-content button:focus-visible,#eventDirectoryToggle:focus-visible{outline:3px solid #3b789d;outline-offset:2px}.event-marker:focus{outline:none;stroke:#142e43;stroke-width:4px}
+@media(max-width:1024px){#eventPanel{top:10px;left:10px;right:10px;bottom:calc(69px + env(safe-area-inset-bottom));width:auto;border-radius:12px;display:none}#eventPanel.mobile-open{display:flex}#eventDirectoryToggle{display:none}.event-panel-open .leaflet-top.leaflet-left{left:0}#eventFilters input,#eventFilters select{font-size:16px;min-height:44px}.event-dates input{font-size:16px!important}#eventFilters{max-height:43%}.event-head{padding-top:14px}#eventPanel .filter-pill{min-height:44px;font-size:14px}.event-row{padding:16px 0}.event-summary button,.event-detail-actions button{min-height:44px}.event-foot{font-size:12px}.event-head>button{min-width:44px;min-height:44px}.event-list-heading button{min-height:44px}}
+@media(max-height:650px){.event-head{padding-top:10px}.event-head h2{font-size:19px}.event-period{padding-bottom:8px}.event-summary{padding-top:7px;padding-bottom:7px}.event-foot{padding-top:6px;padding-bottom:6px}}
+
+@font-face{font-family:"Borderland Sans";font-style:normal;font-weight:200 900;font-display:swap;src:url("vendor/BorderlandSans.ttf") format("truetype")}
+:root{--ui-font:"Borderland Sans",sans-serif}
+html,body,button,input,select,textarea{font-family:var(--ui-font)}
+
+/* Shared typography for both data directories. */
+.mobile-panel-close{display:none}
+@media(max-width:1024px){
+ .mobile-panel-close{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;padding:0;border:1px solid #d8e2dc;border-radius:8px;background:#fff;color:#193f35;font:400 26px/1 Arial,sans-serif;cursor:pointer;touch-action:manipulation}
+ .mobile-panel-close:hover{background:#eef3ef}
+ .mobile-panel-close:focus-visible{outline:2px solid #193f35;outline-offset:2px}
+ .panel-heading{justify-content:space-between;gap:8px}
+ .panel-heading>.title{min-width:0;flex:1}
+ #mobileProjectsClose{position:absolute;top:8px;right:8px;z-index:5}
+ #projectPanel .project-head>h2{padding-right:48px;min-height:44px;display:flex;align-items:center}
+}
+:root{--sidebar-font:"Borderland Sans",sans-serif;--directory-width:338px}
+#projectPanel,#eventPanel,#projectPanel :is(button,input,select,textarea),#eventPanel :is(button,input,select,textarea),#directoryToggle,#eventDirectoryToggle{font-family:var(--sidebar-font)}
+#projectPanel h2,#eventPanel h2{font-size:22px;font-weight:650;line-height:1.2;letter-spacing:-.025em}
+#projectPanel .project-filters label,#eventPanel #eventFilters label{font-size:14px;font-weight:400;line-height:1.4}
+#projectPanel .project-filters :is(input,select),#eventPanel #eventFilters :is(input,select){font-size:14px;font-weight:400;line-height:1.4;min-height:40px;padding:8px}
+#projectPanel .project-name,#eventPanel .event-row-place{font-size:16px;font-weight:650;line-height:1.4}
+#projectPanel .project-org,#eventPanel .event-row-type{font-size:13px;font-weight:400;line-height:1.5}
+#projectPanel .project-summary,#eventPanel .event-summary p{font-size:13px;font-weight:400;line-height:1.5}
+#projectPanel :is(.project-head>p,.project-tag,.project-scope,.project-foot,.project-export-status,.project-record-ids),#eventPanel :is(.event-period,.event-row-top,.event-row-country,.event-foot,.event-detail-source){font-size:12px;font-weight:400;line-height:1.5}
+#projectPanel .project-detail h3,#eventPanel .event-detail-type{font-size:20px;font-weight:650;line-height:1.3;letter-spacing:-.02em}
+#projectPanel .project-detail :is(p,ul),#eventPanel :is(.event-detail-value,.event-detail-notes){font-size:16px;font-weight:400;line-height:1.6}
+#projectPanel .project-detail .project-record-ids{font-size:12px;line-height:1.5}
+#projectPanel .project-detail h4,#eventPanel .event-detail-label{font-size:12px;font-weight:600;line-height:1.5}
+#projectPanel :is(.project-actionbar button,.project-detail button,#projectMore),#eventPanel :is(.event-summary button,.event-detail-actions button,#eventMore){font-size:13px;font-weight:400;line-height:1.4;min-height:36px}
+#projectPanel .project-actionbar label{font-size:13px;line-height:1.4}
+#projectPanel .project-filter-more>summary,#eventPanel #eventMoreFilters>summary{font-size:14px;font-weight:600;line-height:1.5}
+#projectPanel .project-empty,#eventPanel .event-empty{font-size:14px;font-weight:400;line-height:1.6}
+#directoryToggle,#eventDirectoryToggle{font-size:14px;font-weight:400;line-height:1.4}
+#projectPanel .project-head{max-height:54%;overflow:auto;overscroll-behavior:contain}
+@media(max-width:1024px){#projectPanel .project-filters :is(input,select),#eventPanel #eventFilters :is(input,select){font-size:16px;min-height:44px}#projectPanel :is(.project-actionbar button,.project-detail button,#projectMore),#eventPanel :is(.event-summary button,.event-detail-actions button,#eventMore){min-height:44px}}
+@media(max-height:650px){#projectPanel h2,#eventPanel h2{font-size:19px}}
+/* Quiet, readable labels for the map-view buttons. */
+.panel>.preset-grid{grid-auto-rows:50px}
+.panel .preset-grid button{font-family:var(--sidebar-font);font-size:16px;font-weight:400;line-height:1.2;letter-spacing:0;min-height:50px;height:50px;padding:6px 12px;-webkit-font-smoothing:antialiased}
+.panel .preset-grid button.active{font-weight:600}
+@media(min-width:1025px) and (min-height:700px){.panel{grid-template-rows:44px 286px minmax(100px,1.3fr) minmax(90px,1fr) 58px}}
+/* One frame and a narrow collapse tab for both directories. */
+#projectPanel,#eventPanel{box-sizing:border-box;width:var(--directory-width);border-radius:12px;background:#fff}
+.panel :is(button,input,select,summary),.panel .title,.mobile-tabs button,#eventPanel .filter-pill{font-family:var(--sidebar-font)}
+#projectPanel h2,#eventPanel h2{font-weight:600;letter-spacing:-.015em}
+#projectPanel .project-name,#eventPanel .event-row-place{font-weight:600}
+#directoryToggle,#eventDirectoryToggle{box-sizing:border-box;position:absolute;top:calc(50% - 22px);bottom:auto;left:14px;width:28px;height:44px;padding:0;display:grid;place-items:center;border:1px solid #c4cfd7;border-radius:0 7px 7px 0;background:#fff;color:#304b60;box-shadow:2px 2px 7px #0002;cursor:pointer}
+#directoryToggle svg,#eventDirectoryToggle svg{width:16px;height:16px;transition:transform .15s}
+#directoryToggle[aria-expanded="true"] svg,#eventDirectoryToggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+body:not(.directory-hidden) #directoryToggle,.event-panel-open #eventDirectoryToggle{left:calc(var(--directory-width) + 13px);border-left:0}
+#directoryToggle:hover,#eventDirectoryToggle:hover{background:#eaf0f5}
+#directoryToggle:focus-visible,#eventDirectoryToggle:focus-visible{outline:3px solid #3b789d;outline-offset:2px}
+@media(min-width:1025px){body:not(.directory-hidden) .leaflet-top.leaflet-left,.event-panel-open .leaflet-top.leaflet-left{left:calc(var(--directory-width) + 28px)}}
+@media(max-width:1024px){#projectPanel,#eventPanel{width:auto}#directoryToggle,#eventDirectoryToggle{display:none}}
+
+
+.rai-source-summary{background:#f1f6f3;border-left:3px solid #397763;padding:4px 16px 10px;margin:18px 0}.rai-source-summary h3{color:#295d4c}.rai-source-row{background:#f1f6f3}
+
+#projectPanel.project-detail-open .project-head :is(p,fieldset,.project-summary,.project-actionbar,.project-export-status){display:none}
+#projectPanel.project-detail-open .project-head{max-height:none;overflow:visible}
+</style>
+<style id="atlas-controls-28">
+/* Compact atlas controls: presentation only; all view actions are unchanged. */
+.panel{--ink:#244e46;--muted:#637078;--line:#d5dfe1;color:#233a45;background:rgba(255,255,255,.98);border:1px solid #e0e7e2;border-radius:12px;box-shadow:0 8px 26px #0003;grid-template-rows:minmax(40px,auto) auto minmax(95px,1.2fr) minmax(80px,1fr) 58px;gap:10px}
+.panel .title{font-family:var(--ui-font);font-size:20px;font-weight:650;letter-spacing:-.025em;line-height:1.2;color:#244e46}
+.panel>.preset-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(37px,auto);gap:6px;padding:0 0 12px;overflow:visible;scrollbar-gutter:auto;align-content:start;border-bottom:1px solid #d5dfe1}
+.panel .preset-grid button{height:auto;min-height:37px;padding:7px 9px;font:400 12px/1.25 var(--ui-font);letter-spacing:0;text-align:left;color:#233a45;background:#f8faf8;border:1px solid #e0e7e2;border-radius:7px;transition:background-color .12s,border-color .12s}
+.panel .preset-grid button:nth-child(-n+2){position:static;box-shadow:none}
+.panel .preset-grid button:not(.active):not(:disabled):hover{background:#edf3ef;border-color:#92a79e}
+.panel .preset-grid button.active{background:#244e46;border-color:#244e46;color:#fff;font-weight:600}
+.panel .preset-grid button:disabled{color:#8b969c;background:#f6f8f7;border-color:#e0e7e2}
+.panel .choice-buttons,.panel .environment-choices{gap:6px}
+.panel .choice-buttons button,.panel .environment-choices button{font:400 12px/1.35 var(--ui-font);min-height:36px;padding:7px 9px;text-align:left;border:1px solid #d5dfe1;border-radius:7px;background:#fff;color:#233a45}
+.panel .choice-buttons button.active,.panel .environment-choices button[aria-pressed="true"]{background:#244e46;border-color:#244e46;color:#fff;font-weight:600}
+.panel :is(.choice-buttons,.environment-choices) button:not(.active):not([aria-pressed="true"]):not(:disabled):hover{background:#edf3ef;border-color:#92a79e}
+.panel :is(button,summary):focus-visible{outline:3px solid #b38b50;outline-offset:2px}
+.panel .options-heading{font:600 13px/1.4 var(--ui-font);color:#244e46}
+.panel .context-menu{border-color:#d5dfe1;border-radius:7px;background:#fff}
+.panel .context-menu summary{font-size:12px;font-weight:500;color:#233a45}
+.panel .context-option{font-family:var(--ui-font);font-size:11px;font-weight:400;line-height:1.35;color:#455951}
+.panel .context-option input{accent-color:#244e46}
+.panel .map-nav a,.panel #wbOpenSourcesButton{font-family:var(--ui-font);font-weight:400;border-color:#d5dfe1;border-radius:7px;box-shadow:none;color:#233a45}
+.panel #wbOpenSourcesButton:hover,.panel #wbOpenSourcesButton.wb-sources-open{background:#edf3ef;color:#244e46;border-color:#92a79e}
+@media(min-width:1025px) and (max-height:700px){.panel{grid-template-rows:minmax(34px,auto) auto minmax(65px,1.2fr) minmax(60px,1fr) 58px;gap:7px}.panel .title{font-size:18px}.panel>.preset-grid{gap:5px;padding-bottom:9px;grid-auto-rows:minmax(35px,auto)}.panel .preset-grid button{min-height:35px;padding:6px 8px}}
+@media(max-width:1024px){.panel .title{font-size:19px}.panel>.preset-grid{grid-auto-rows:minmax(44px,auto);gap:6px;overflow:visible}.panel .preset-grid button{height:auto;min-height:44px;padding:8px 10px;font-size:13px}.panel .choice-buttons button,.panel .environment-choices button{min-height:44px;font-size:13px}.panel.mobile-open{gap:10px}.panel .mobile-panel-close{color:#244e46}}
+@media(prefers-reduced-motion:reduce){.panel .preset-grid button{transition:none}}
+
+
+/* Rural road access keeps source-unit selection in the existing sidebar. */
+.rural-access-view .panel{grid-template-rows:minmax(40px,auto) auto minmax(0,1fr) minmax(0,.48fr) 58px}
+.rural-map-view-switch>summary{padding:9px 0;font:600 12px/1.4 var(--ui-font);cursor:pointer;color:#244e46;border-bottom:1px solid #d8dfe1}
+.rural-map-view-switch .preset-grid{max-height:min(220px,28vh);overflow:auto;padding:8px 0;gap:6px}
+.rural-access-controls{font-size:12px;line-height:1.5;margin-top:10px;color:#233a45}
+.rural-access-controls>p{margin:6px 0 10px;color:#53656c}
+.rural-access-controls label{display:block;font-size:12px;font-weight:600;margin:8px 0}
+.rural-access-controls select{display:block;width:100%;min-width:0;box-sizing:border-box;border:1px solid #cbd7d0;border-radius:6px;background:white;color:#233a45;min-height:40px;padding:8px;margin-top:5px;font:400 13px/1.4 var(--ui-font)}
+.rural-access-controls button{font:400 12px/1.4 var(--ui-font);min-height:36px;padding:7px 10px;border:1px solid #bccfc5;border-radius:6px;background:#fff;color:#244e46;cursor:pointer}
+.rural-access-selection{margin:10px 0;padding:11px 12px;border:1px solid #d6e1dd;border-left:3px solid #244e46;border-radius:6px;background:#f5f9f4;overflow-wrap:anywhere}
+.rural-access-selection[hidden]{display:none!important}
+.rural-access-selection header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.rural-access-selection header p{font-size:10.5px;line-height:1.4;color:#53656c;margin:0}
+.rural-access-selection header button{min-width:32px;min-height:32px;border:0;background:transparent;font-size:22px;line-height:1;padding:0}
+.rural-access-selection h3{font-size:17px;line-height:1.3;margin:5px 0 3px;font-weight:650;color:#233a45}
+.rural-access-selection .rural-access-area{font-size:11px;margin:0 0 10px;color:#53656c}
+.rural-access-value{font-size:29px;font-weight:650;line-height:1.15;color:#244e46;margin:5px 0}
+.rural-access-value.rural-access-missing{font-size:21px;color:#53656c}
+.rural-access-stat-label{font-size:12px;line-height:1.45;margin:3px 0 10px}
+.rural-access-selection table{width:100%;border-collapse:collapse;font-size:11px;line-height:1.5;margin:10px 0}
+.rural-access-selection th{font-weight:400;text-align:left;padding:4px 5px 4px 0;vertical-align:top;color:#53656c}
+.rural-access-selection td{text-align:right;padding:4px 0;vertical-align:top;color:#233a45;font-variant-numeric:tabular-nums}
+.rural-access-selection details{font-size:11px;margin-top:10px}.rural-access-selection summary{cursor:pointer;min-height:28px;line-height:28px}
+.rural-access-method{margin-top:10px;font-size:11px;line-height:1.55;color:#53656c}.rural-access-method summary{cursor:pointer;min-height:30px;line-height:30px}.rural-access-method p{margin:6px 0}
+.rural-access-controls :is(select,button,summary):focus-visible{outline:2px solid #176f88;outline-offset:2px}
+.rural-access-path:focus-visible{outline:none;stroke:#142e43;stroke-width:3px}
+.rural-access-key .rural-access-swatch{width:16px;height:12px;border:1px solid #92a393;flex:0 0 auto;border-radius:2px}
+.rural-access-key .legend-classes{grid-template-columns:1fr 1fr}.rural-access-key .metric-title{margin-top:0}.rural-access-key p{font-size:11px;line-height:1.5;color:#53656c;margin:7px 0}
+@media(max-width:1024px){.rural-access-view .panel{grid-template-rows:40px auto minmax(0,1fr) minmax(0,.43fr) 38px}.rural-map-view-switch>summary{padding:13px 0}.rural-map-view-switch .preset-grid{max-height:min(190px,25vh)}.rural-access-controls select{font-size:16px;min-height:44px}.rural-access-controls button{min-height:44px}.rural-access-selection header button{min-width:44px;min-height:44px}.rural-access-value{font-size:30px}.rural-access-method summary,.rural-access-selection summary{min-height:44px;line-height:44px}}
+@media(max-height:600px){.rural-access-view .panel{grid-template-rows:minmax(32px,auto) auto minmax(0,1fr) minmax(0,.4fr) 34px;gap:6px}.rural-map-view-switch .preset-grid{max-height:min(140px,22vh)}}
+
+</style><link href="sedac/sedac-v2.css?v=2026-10-15.views.49" rel="stylesheet"/><script src="sedac/sedac-v7.js?v=2026-10-22.map-clarity.81"></script><script src="analysis/rural-country-lines-v1.js?v=2026-10-15.rural-borders.52"></script><link href="export/save-view-v5.css?v=2026-10-19.export-orientation.70" rel="stylesheet"/><script src="export/save-view-v7.js?v=2026-10-19.export-orientation.70"></script><link href="corridors/primary-network-v1.css?v=2026-10-20.reset.76" rel="stylesheet"/><link href="corridors/connectivity-districts-v1.css?v=2026-10-21.districts.77" rel="stylesheet"/><link href="ui/map-clarity-v1.css?v=2026-10-22.map-clarity.81" rel="stylesheet"/><style>button[data-unavailable]{opacity:.48;cursor:not-allowed}</style><style id="iati-project-styles">
+.project-evidence{padding:10px 0 10px 10px;border-left:2px solid #7299ae;margin:12px 0}.project-evidence p{font-size:13px!important}.project-evidence small,.project-finance-note{font-size:12px!important;color:#536776}.project-finance{margin:10px 0;border:1px solid #dce5ea;border-radius:7px;padding:9px}.project-finance summary,.project-documents summary{cursor:pointer;font-size:13px;font-weight:600}.project-finance small{display:block;font-size:11px;font-weight:400;overflow-wrap:anywhere;color:#5e7280}.project-finance table{width:100%;border-collapse:collapse;margin-top:9px;font-size:12px}.project-finance th,.project-finance td{text-align:left;vertical-align:top;border-top:1px solid #e2e8ec;padding:7px 3px}.project-finance td{text-align:right}.project-finance p{font-size:11px!important}.project-documents{margin:12px 0}.project-documents p{font-size:13px!important}.project-foot a{color:#245d78}
+</style></head>
+<body class="directory-hidden">
+<div id="map"></div>
+<button aria-controls="projectPanel" aria-expanded="false" hidden="" id="directoryToggle" type="button">Show project directory</button>
+<aside aria-label="Project work directory" id="projectPanel" inert="">
+<button aria-label="Minimise projects and return to map" class="mobile-panel-close" id="mobileProjectsClose" title="Return to map" type="button"><span aria-hidden="true">×</span></button>
+<div class="project-head"><h2>Project work</h2><p>IATI publisher records · 28 October 2026. UNDP first; filter by organisation, dates and geographical evidence.</p>
+<fieldset class="project-filters" disabled="" id="projectFilters">
+<label class="wide">Search projects<input autocomplete="off" id="projectSearch" placeholder="Name, place or organisation" type="search"/></label>
+<details class="project-filter-more wide" id="projectFilterMore" open=""><summary>Filter projects</summary><div class="project-filter-grid">
+<label class="wide">Working area<select id="projectOutcome"><option value="">All working areas</option></select></label>
+<label>Organisation<select id="projectOrg"><option value="">All organisations</option></select></label>
+<label>Period<select id="projectPeriod"><option value="all">Available records</option><option value="active">Reported active</option><option value="planned">Planned</option><option value="closed">Closed / finalising</option></select></label>
+<label class="wide">Geographical evidence<select id="projectScope"><option value="relevant">Borderland points and named-area evidence</option><option value="mapped">Published coordinates only</option><option value="documented">Named areas in published records</option><option value="local">Specific published points</option><option value="area">Area / uncertain references</option><option value="national">Country context / no borderland placement</option><option value="regional">Multi-country / regional context</option><option value="all">All records, including wider context</option></select></label>
+</div></details>
+</fieldset><div aria-live="polite" class="project-summary" id="projectCount">Loading projects…</div>
+<div class="project-actionbar"><label><input id="projectOverlay" type="checkbox"/>Show on map</label><div class="project-export-actions"><button disabled="" id="projectExcel" title="Download all filtered projects as a formatted Excel workbook" type="button">Download Excel</button><button disabled="" id="projectDownload" title="Download activity and location rows as CSV" type="button">CSV</button><button disabled="" id="projectReset" type="button">Reset</button></div></div><div aria-live="polite" class="project-export-status" id="projectExportStatus" role="status"></div></div>
+<div class="project-content"><div class="project-list" id="projectList"></div>
+<div aria-label="Project details" class="project-detail" id="projectDetail" role="region"></div></div>
+<div class="project-foot">IATI publisher records via d-portal. Locations and status are publisher-reported; country allocations do not establish local delivery.<br/><a download="" href="data/downloads/iati-project-register.csv">All records · CSV</a> · <a download="" href="data/downloads/iati-borderlands-source-records.zip">Borderland source records · ZIP</a></div>
+</aside>
+<div aria-live="polite" id="viewLoading" role="status">Opening map…</div>
+<details id="mobileKey"><summary>Key</summary><div id="mobileLegend"></div></details>
+<nav aria-label="Map controls" class="mobile-tabs"><button aria-pressed="true" id="mobileMap" type="button">Map</button><button aria-pressed="false" id="mobileLayers" type="button">Views</button><button aria-pressed="false" id="mobileProjects" type="button">Projects</button></nav>
+<button aria-controls="eventPanel" aria-expanded="false" hidden="" id="eventDirectoryToggle" type="button">Show events</button>
+<aside aria-label="Political violence events" hidden="" id="eventPanel">
+<header class="event-head"><div><p class="event-eyebrow">ACLED event records</p><h2>Political violence</h2></div><button aria-label="Hide event panel" id="eventPanelClose" type="button">×</button></header>
+<div class="event-period" id="eventPeriod"></div>
+<fieldset disabled="" id="eventFilters">
+<label>Search events<input autocomplete="off" id="eventSearch" placeholder="Place, actor or keyword" type="search"/></label>
+<div class="event-filter-pair"><label>Country<select id="eventCountry"><option value="">All countries</option></select></label><label>Fatalities<select id="eventFatalities"><option value="all">All records</option><option value="fatal">1 or more reported</option><option value="zero">0 recorded</option></select></label></div>
+<details id="eventMoreFilters"><summary>Dates &amp; event types <span id="eventFilterBadge"></span></summary>
+<div class="event-filter-pair event-dates"><label>From<input id="eventFrom" type="date"/></label><label>To<input id="eventTo" type="date"/></label></div>
+<div id="acledFilters"><div class="filter-label">Years</div><div aria-label="Event years" class="filter-pills" id="acledYearFilters" role="group"></div><div class="filter-label">Event types</div><div aria-label="Event types" class="filter-pills" id="acledTypeFilters" role="group"></div></div>
+</details>
+</fieldset>
+<div class="event-summary"><p aria-live="polite" id="eventCount" role="status">Loading events…</p><button id="eventReset" type="button">Reset</button></div>
+<div class="event-content"><div id="eventListView"><div class="event-list-heading"><h3 id="eventListHeading">Events · newest first</h3><button hidden="" id="eventAll" type="button">All results</button></div><p id="eventListHint">Select a cluster or an event on the map.</p><div id="eventList"></div></div><article aria-label="Event details" hidden="" id="eventDetail"></article></div>
+<footer class="event-foot">Reported events, not a complete measure of violence. Coverage and location precision vary.</footer>
+</aside>
+<div class="panel" inert="">
+<div class="panel-heading"><div class="title">Tajikistan–Kyrgyzstan</div><button aria-label="Minimise views and return to map" class="mobile-panel-close" id="mobileViewsClose" title="Return to map" type="button"><span aria-hidden="true">×</span></button></div>
+<div aria-label="Map views" class="preset-grid"><button data-preset="clean">Clean</button><button data-preset="admin">Administrative areas</button><button data-preset="population">Population</button><button data-preset="builtup">Settlements &amp; lights</button><button data-preset="transport">Corridors &amp; infrastructure</button><button data-preset="services">Services</button><button data-preset="access">Travel time / access</button><button data-preset="environment">Environment</button><button data-preset="acled">Recorded events</button><button data-preset="projects">Project work</button></div>
+<div class="view-options"><div class="options-heading" id="activeViewTitle">Clean</div><p id="viewHint">Select a view to see its options.</p>
+<div id="themeControls"></div>
+<div class="metric-controls" id="analysisControls">
+<label class="control-label" for="analysisSelect">Analysis</label>
+<select class="analysis-select" id="analysisSelect"></select>
+<div class="analysis-subcontrols" id="healthModeControls">
+<div class="control-label">Travel mode</div>
+<div class="choice-buttons" id="healthModeButtons"></div>
+</div>
+<div class="analysis-subcontrols" id="analysisMetricControls">
+<div class="control-label">Display indicator</div>
+<div class="choice-buttons" id="analysisMetricButtons"></div>
+</div>
+</div>
+<div class="metric-controls" id="hexControls">
+<div class="control-label">5 km hex indicator</div>
+<div class="choice-buttons" id="hexMetricButtons"></div>
+</div>
+<div class="metric-controls" id="landControls">
+<div class="control-label">Land-cover indicator</div>
+<div class="choice-buttons" id="landMetricButtons"></div>
+</div>
+<div class="metric-controls" id="accessControls">
+<div class="control-label">5 km accessibility indicator</div>
+<div class="choice-buttons" id="accessModeButtons"></div>
+</div>
+<div class="metric-controls" id="environmentControls"></div>
+<div class="metric-controls" id="climateControls">
+<div class="control-label">5 km hazard indicator</div>
+<div class="choice-buttons" id="climateModeButtons"></div>
+</div>
+<details class="context-menu" id="contextMenu">
+<summary>Add context layers</summary>
+<div class="context-options">
+<label class="context-option"><input type="checkbox" value="majorCorridors"/>Primary roads / railways</label>
+<label class="context-option"><input type="checkbox" value="feederRoads"/>Secondary / tertiary roads</label>
+<label class="context-option"><input type="checkbox" value="crossings"/>Unverified road–border intersections</label>
+<label class="context-option"><input type="checkbox" value="towns"/>Towns</label>
+<label class="context-option"><input type="checkbox" value="markets"/>Mapped markets</label>
+<label class="context-option"><input type="checkbox" value="healthFacilities"/>Health facilities</label>
+<label class="context-option"><input type="checkbox" value="infrastructure"/>Strategic infrastructure</label>
+<label class="context-option"><input type="checkbox" value="adminReference"/>Administrative reference</label>
+</div>
+</details>
+</div>
+<div class="map-key"><div class="section-title">Key</div><div id="legend"></div></div>
+<div class="panel-footer">
+<div class="map-nav"><a href="#home" onclick="parent.WBVault.go('home');return false">Home</a><a href="#analysis" onclick="parent.WBVault.go('analysis');return false">Analysis</a></div><div id="wbInfoOpenBox"><button id="wbOpenSourcesButton" type="button">Data sources &amp; limitations</button><button id="wbSaveView" title="Download a high-resolution framed PNG of the current map, with legend and source credits" type="button">Save view</button></div>
+</div>
+</div>
+<div aria-hidden="true" id="wbSourcesOverlay">
+<div aria-labelledby="wbSourcesHeaderTitle" aria-modal="true" id="wbSourcesShell" role="dialog">
+<div id="wbSourcesHeader">
+<div id="wbSourcesHeaderTitle">Data sources, licences and limitations</div>
+<button aria-label="Close data sources" id="wbSourcesClose" title="Close" type="button">×</button>
+</div>
+<div id="wbSourcesContent"><h2>Data sources, licences and limitations</h2><p>UNDP · Tajikistan–Kyrgyzstan borderlands. Mapping by Hugh Lamarque. Prepared from the supplied QGIS package, 28 October 2026.</p><h3>Study area</h3><p class="geography-scope">The study includes Sughd Region, Batken region, Nookat district and Osh city. A 5 km buffer on each side of the Osh–Nookat road connects Nookat to the municipality, restricted to their combined bounding envelope and Kyrgyzstan. Only the intersecting parts of Aravan and Kara-Suu are included. Osh city and the approach contribute to all study totals. Sughd is retained for the Tajikistan country office. The programme summary supports links through Osh, Batken, Isfara and Sughd; the ToR focuses on Batken–Kyzyl-Bel–Isfara. The exact extent and approach width are analytical choices, not a programme-prescribed beneficiary boundary. Analytical administrative polygons predate the 2025 agreement; neither they nor the OSM display reference have been verified against its implementation.</p><p class="scope-downloads"><a download="undp-data-coverage.geojson" href="data/data-coverage.geojson">Data coverage · GeoJSON</a> · <a download="undp-programme-study-area.geojson" href="data/programme-study-area.geojson">Programme working extent · GeoJSON</a> · <a download="undp-scope-definition.json" href="data/scope-definition.json">Geographic selection · JSON</a></p><p class="boundary-explanation">National borders use one OpenStreetMap reference network, deduplicated by shared boundary-way IDs from the 27 October 2026 extracts. This avoids stacking disagreeing country outlines. The dashed green line marks the working study extent; it is not a national border. Enclave borders remain visible. Continuous data coverage includes enclosed territories, with their source-country attribution retained. Whole-coverage totals include those territories; inclusion does not establish programme eligibility. Names and boundaries do not imply United Nations endorsement or acceptance; this reference has not been verified against the 2025 agreement.</p><div class="wb-sources-table-wrap"><table class="wb-sources-table"><thead><tr><th>Theme</th><th>Source and date</th><th>Interpretation</th></tr></thead><tbody><tr><td>National borders and administrative areas</td><td>National reference: OSM · 27 October 2026 · ODbL. Analytical polygons: supplied HDX/OCHA and geoBoundaries files.</td><td>Shared OSM boundary ways are drawn once. The separate study outline and analytical polygons are not treaty-validated boundaries.</td></tr><tr><td>Roads, places, services and infrastructure</td><td>OpenStreetMap extracts · 27 October 2026 · © OpenStreetMap contributors · ODbL.</td><td>Coverage varies. Named towns are OSM nodes, not census footprints. Calculated road–boundary intersections are not verified open border posts.</td></tr><tr><td>Population</td><td>WorldPop 2025 R2025A · constrained, UN-adjusted · 1 km counts.</td><td>Exact equal-area pixel overlap allocates source counts. Hex values are people/km². Missing source cells remain unknown; they do not establish an absence of population.</td></tr><tr><td>Population near roads</td><td>WorldPop 2025 and OSM 27 October 2026.</td><td>Dissolved 10 km buffers on either side of motorway, trunk, primary roads and links. Country rows use that country’s roads. Straight-line proximity, not travel time or operational accessibility.</td></tr><tr><td>Local connectivity</td><td>Original shared OSM node IDs and a directed local-road graph.</td><td>Paths up to 10 km on non-major roads, one-way and motor-access tags, 250 m settlement snap, 20 km halo. Raw nodes are not merged interchanges. No turn restrictions, live closures or border-operability model.</td></tr><tr><td>Built-up surface</td><td>JRC GHSL R2023A · 2000, 2018 and 2020 · European Commission reuse terms.</td><td>2018 native 10 m values averaged to 100 m; 2000/2020 use native 100 m surface. Land share, not occupied buildings or population. Changes may include model differences.</td></tr><tr><td>Night-time lights</td><td>EOG VIIRS monthly radiance · August 2026.</td><td>Mean valid radiance (nW/cm²/sr) per hex; an indirect activity indicator affected by background noise and coverage. Uneven display bands emphasise lower radiance without changing source values.</td></tr><tr><td>Land cover</td><td>ESA WorldCover 2021, 10 m · CC BY 4.0.</td><td>Systematic approximately 100 m sample of source classes; proportions are sampled, not full-resolution area accounting.</td></tr><tr><td>Relative deprivation</td><td><a href="https://doi.org/10.7910/DVN/TEM9JH" rel="noopener" target="_blank">GRDI v1.10 · 2025 release</a>.</td><td>Composite relative index, 0–100; not a poverty percentage. Valid-area-weighted summaries exclude source gaps and are not population weighted.</td></tr><tr><td>River flood</td><td>WRI Aqueduct Floods · historical 25-year return-period inundation.</td><td>Mean valid depth per hex; not a current forecast or annual flood probability.</td></tr><tr><td>Recorded events</td><td>ACLED extract through 28 October 2025; study records 7 January 2018–15 October 2025. ACLED terms apply.</td><td>No 2026 coverage. All supplied event types, including protests and riots. Reporting and location precision vary; fatalities are reported estimates.</td></tr><tr><td>Satellite basemap</td><td>Esri World Imagery and its contributors.</td><td>Imagery dates and resolution vary. Provider terms and attribution apply.</td></tr><tr><td>Rainfall</td><td><a href="https://www.chc.ucsb.edu/data/chirps3" rel="noopener" target="_blank">CHIRPS v3 · annual 2025 and September 2026 · 0.05°</a>.</td><td>Area-weighted rainfall totals in mm. Not anomalies or drought severity. Valid source-cell intersections; no population weighting. Source clips and provenance are downloadable in Analysis.</td></tr><tr><td>Healthcare travel time</td><td><a href="https://malariaatlas.org/project-resources/accessibility-to-healthcare/" rel="noopener" target="_blank">Malaria Atlas Project · nominal 2019, published 2020 · approximately 1 km</a>. WorldPop 2025 counts.</td><td>Native-grid provider clips. Exact source-cell overlap allocates population to 5 km cells and analysis areas; 30 / 60 / 120-minute bands are available. Historical model, not current border permission or facility operation. Friction clips are routing inputs.</td></tr><tr><td>Surface water</td><td><a href="https://global-surface-water.appspot.com/download" rel="noopener" target="_blank">JRC Global Surface Water v1.5 · occurrence 1984–2024; seasonality 2024</a>.</td><td>Original approximately 30 m cells weighted by area and assigned by centre. Zero is valid; missing observations are excluded. Detection frequency differs from water-area share. Display images are reduced-resolution overviews.</td></tr><tr><td>Urban centres</td><td><a href="https://human-settlement.emergency.copernicus.eu/download.php?ds=ucdb" rel="noopener" target="_blank">JRC GHS-UCDB R2024A v1.2 · 2025 epoch</a>.</td><td>Ten source centroids inside the study. Whole original footprints and modelled populations are retained, including portions outside the study. Not municipal boundaries or census counts; smaller towns may be absent.</td></tr></tbody></table></div><p><a download="" href="data/downloads/TK_QGIS_Refresh_2_0_1.py">Corrected full QGIS refresh builder · Python</a> · v2.0.1 recognises MAP .geotiff archive members. Scanner repair tested; no rerun is needed for the healthcare layers now on this site.</p><section class="data-readiness" id="data-readiness"><h3>Data to add next</h3><p>Source audit · 28 October 2026. Rainfall totals, the IATI register, healthcare travel time, surface water and UCDB urban centres are loaded. Remaining work centres on current local verification, rainfall anomalies, water time series and the unavailable themes below.</p><p><a download="" href="data/programme-sites-template.csv">Download programme-site template · CSV</a> · <a download="" href="data/data-readiness.json">Download data-gap audit · JSON</a></p><div class="wb-sources-table-wrap"><table class="wb-sources-table"><thead><tr><th>Priority / theme</th><th>Status and source</th><th>Next step</th></tr></thead><tbody><tr><td>1. Programme sites and investments</td><td>IATI register imported; country-office site verification pending<br/><a href="https://d-portal.org/" rel="noopener" target="_blank">IATI publisher records via d-portal</a></td><td>Review named-area evidence and published points with the Tajikistan country office; add programme delivery status and authoritative site coordinates.<br/><small>Publisher records and country allocations do not establish verified local delivery. Activity-wide funding is not allocated to the study area.</small></td></tr><tr><td>1. Boundary and crossing reference</td><td>Local verification needed<br/>Tajik office and national boundary / border authorities</td><td>Obtain an agreed GIS reference reflecting the 2025 agreement, plus dated crossing names, coordinates and operating conditions.<br/><small>The display now uses one shared OSM national-boundary reference from 27 October 2026. Analytical polygons remain historical. Neither is treaty-validated; road–boundary intersections are only candidates.</small></td></tr><tr><td>2. Rainfall and rainfall deficits</td><td>2025 annual and September 2026 totals loaded; additional monthly clips returned<br/><a href="https://data.chc.ucsb.edu/products/CHIRPS/v3.0/monthly/" rel="noopener" target="_blank">CHIRPS v3 · 0.05° · 1981 to near-present</a></td><td>Validate the returned monthly clips, resolve the skipped July 2026 duplicate, and obtain a consistent 1991–2020 baseline before calculating anomalies.<br/><small>Loaded totals use exact valid source-cell area weighting. Additional QGIS clips are not yet integrated; monthly totals alone do not establish drought severity.</small></td></tr><tr><td>2. Surface-water history</td><td>Loaded: native-resolution occurrence and 2024 seasonality; longer time series pending<br/><a href="https://global-surface-water.appspot.com/download" rel="noopener" target="_blank">EC JRC / Google Global Surface Water v1.5 · through 2024</a></td><td>Define the decision-relevant trend period before adding annual water change or seasonal variability. Validate water-supply implications against local records.<br/><small>Summaries use original approximately 30 m tiles, not the QGIS review overviews. Zero is retained and NoData excluded. Water detection does not measure water quality or service availability. Collection changes affect long-term comparisons.</small></td></tr><tr><td>2. Healthcare travel time</td><td>Loaded: native-grid walking and motorised healthcare, friction clips and 5 km summaries<br/><a href="https://malariaatlas.org/project-resources/accessibility-to-healthcare/" rel="noopener" target="_blank">Malaria Atlas Project · nominal 2019 · approximately 1 km</a></td><td>Validate the historical baseline against current facility operations and dated crossing restrictions with the country office. No QGIS rerun is required for these data.<br/><small>MAP describes nominal 2019 accessibility, paired with WorldPop 2025. It does not establish current access, facility operation, capacity or care quality. Friction is a routing input, not a destination travel-time map.</small></td></tr><tr><td>3. Urban settlement footprints</td><td>Loaded: 10 UCDB centres, original polygons, centroids and 2025 population<br/><a href="https://human-settlement.emergency.copernicus.eu/download.php?ds=ucdb" rel="noopener" target="_blank">JRC GHS Urban Centre Database R2024A · 2025 epoch</a></td><td>Review source names and footprint relevance with the country office; use OSM towns for smaller places outside the UCDB urban-centre definition.<br/><small>Selected by source centroid inside the study area. Population remains that of the entire footprint; Osh extends outside the study. These are not municipal boundaries or census counts.</small></td></tr><tr><td>3. Historical heat</td><td>Public inputs identified; processing needed<br/><a href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land" rel="noopener" target="_blank">Copernicus ERA5-Land hourly temperature and dewpoint</a></td><td>Subset the study, define a heat metric and observation period, then calculate hourly heat exposure and annual exceedances.<br/><small>The roughly 9 km model grid needs care in mountain valleys. CDS access requires an account and licence acceptance.</small></td></tr><tr><td>3. Rural road access</td><td>Definition and source needed<br/>Road-condition inventory and rural population classification</td><td>Obtain the all-season road classification and rural population definition before calculating the rural population within 2 km.<br/><small>The existing 10 km primary-road proximity statistic is not the Rural Access Index.</small></td></tr><tr><td>3. Groundwater and water points</td><td>Local records needed<br/>Water authorities, service providers and field surveys</td><td>Request well and water-point locations, functionality and observation dates.<br/><small>Mapped infrastructure alone does not establish functioning water services.</small></td></tr></tbody></table></div></section><h3>Inputs still needed</h3><p>Country-office-verified programme sites, dated crossing and facility operations, rural road access, rainfall anomalies, longer surface-water time series, groundwater, water-point surveys and historical humid heat remain to be added. Unsupported controls are marked unavailable. Healthcare, surface-water summaries and urban centres are now available alongside rainfall totals and IATI records.</p><h3>Interpretation</h3><p>Map and Analysis share the same study area and data. Five-kilometre hexagons are clipped analytical units, measured flat-to-flat (about 21.65 km² for a full cell). Smaller cells do not increase source resolution. Continuous data coverage includes enclosed territories; source NoData remains missing. Source dates describe the inputs, not current operating conditions.</p></div>
+</div>
+</div>
+<script src="vendor/leaflet.js"></script>
+<script src="vendor/leaflet.markercluster.js"></script>
+<script src="corridors/primary-network-v1.js?v=2026-10-20.reset.76"></script>
+<script src="corridors/corridor-integration-v13.js?v=2026-10-21.districts.77"></script>
+<script src="map-app.js"></script></body>
+</html>

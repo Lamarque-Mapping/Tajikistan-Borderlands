@@ -1,0 +1,627 @@
+{
+  "sha256": "74e93e60d456b673b0f1b42c948cc37b548e98dcf9f01e51ae9539738a2509c8",
+  "parts": [
+    {
+      "name": "data.tar.gz.part-000",
+      "bytes": 500000,
+      "sha256": "46dcf771e52f1f2b27b441a0dd77eb2659394a7a22e848a75ae04cb339106d0d"
+    },
+    {
+      "name": "data.tar.gz.part-001",
+      "bytes": 500000,
+      "sha256": "84b7599e30867c83579df73926d4f0b89ed1d06466e2e6bffdbdd343d89cdfd5"
+    },
+    {
+      "name": "data.tar.gz.part-002",
+      "bytes": 500000,
+      "sha256": "4a6ef4cfb54b01d31f2923cb7d6cee0f66ea0770d7f61cee87022313b1cafb45"
+    },
+    {
+      "name": "data.tar.gz.part-003",
+      "bytes": 500000,
+      "sha256": "9923fd2aab3cd8b5dde15307db176e0daf03ab164a994c9b06be7e731692b8f6"
+    },
+    {
+      "name": "data.tar.gz.part-004",
+      "bytes": 500000,
+      "sha256": "1c381f4e6aef39673447732c162fe9e7a420413e0d5ab1a4cd0aa8995e3184fe"
+    },
+    {
+      "name": "data.tar.gz.part-005",
+      "bytes": 500000,
+      "sha256": "4ff7fac6e767f38e812e5a50f851271c8c2ac1c903370ebf598c61de2d99922f"
+    },
+    {
+      "name": "data.tar.gz.part-006",
+      "bytes": 500000,
+      "sha256": "25bb66462a568c6310971ce5d840acf5f585173fefb84cb8910288ba8a4264e5"
+    },
+    {
+      "name": "data.tar.gz.part-007",
+      "bytes": 500000,
+      "sha256": "5000516e703d1bf8ff08d5330330ac272a6ece6cda6b883dddf6b77155d66e60"
+    },
+    {
+      "name": "data.tar.gz.part-008",
+      "bytes": 500000,
+      "sha256": "562d28773faf8103ef1b09d614d808f704fd5dd82d79e0fc46d669a5babafb7a"
+    },
+    {
+      "name": "data.tar.gz.part-009",
+      "bytes": 500000,
+      "sha256": "af073563f636bb6b66dbf8b681aba72a87a80065ea81e9eb741fa8a9d61bcc8a"
+    },
+    {
+      "name": "data.tar.gz.part-010",
+      "bytes": 500000,
+      "sha256": "fcb875fe78780ce6b998f16f441f5abc9339244bf8469d9762af29b8752665ff"
+    },
+    {
+      "name": "data.tar.gz.part-011",
+      "bytes": 500000,
+      "sha256": "77eefdc8b9b56d77ff5dd75f6fe1816e5b30a2af7ee0799e7315d269285777f5"
+    },
+    {
+      "name": "data.tar.gz.part-012",
+      "bytes": 500000,
+      "sha256": "feabdf040572aa8d72a6fa20e261fd9e3cf7ed2ea469c41b2ed64fac87e682f1"
+    },
+    {
+      "name": "data.tar.gz.part-013",
+      "bytes": 500000,
+      "sha256": "fb8e91f96077278ef7ce557b4e562508888668c321126169778b184636cd808a"
+    },
+    {
+      "name": "data.tar.gz.part-014",
+      "bytes": 500000,
+      "sha256": "fe47eff4cbc39d5de1005a323b87ad5eb4418e0b4f7542abd96813da11f7808b"
+    },
+    {
+      "name": "data.tar.gz.part-015",
+      "bytes": 500000,
+      "sha256": "63fd4b8e470e1f29dcd70c1b0c153dd3990a6fc2268bf73a502e9c310a486158"
+    },
+    {
+      "name": "data.tar.gz.part-016",
+      "bytes": 500000,
+      "sha256": "852d344d8be7067f9a74e7d7bd56806b70b8098ffb7cc3296cea1fa23c8d1007"
+    },
+    {
+      "name": "data.tar.gz.part-017",
+      "bytes": 500000,
+      "sha256": "1cd250d50ce4c944f8ba90f7fac23d38bb418367d90c5cd17eafc63f979e0c08"
+    },
+    {
+      "name": "data.tar.gz.part-018",
+      "bytes": 500000,
+      "sha256": "ef8220372cd55aa94f3fab746049805b73741b97dcc77077b015b862780e0bfb"
+    },
+    {
+      "name": "data.tar.gz.part-019",
+      "bytes": 500000,
+      "sha256": "c22e9dfc0ada2d6037510ab6a158f242035cda2d51ecc65efedcfcbd3e0d1414"
+    },
+    {
+      "name": "data.tar.gz.part-020",
+      "bytes": 500000,
+      "sha256": "222a40cfc683b0ab63ff2790c47800ac81c2d7721994009ae385fb0cfed71849"
+    },
+    {
+      "name": "data.tar.gz.part-021",
+      "bytes": 500000,
+      "sha256": "9e18fe82336b1c1b6e510353fb0874b97df792f1478b768a9fbb2114328bba81"
+    },
+    {
+      "name": "data.tar.gz.part-022",
+      "bytes": 500000,
+      "sha256": "15ab55b078d5e0c033503f976979998cf7d9209e5836fd69777557842f4205ad"
+    },
+    {
+      "name": "data.tar.gz.part-023",
+      "bytes": 500000,
+      "sha256": "0a52354022d8ea1057a6f372578f7eb4fb1b6e5d5bdb6a362bd7dfba88cb81ff"
+    },
+    {
+      "name": "data.tar.gz.part-024",
+      "bytes": 500000,
+      "sha256": "7aac57a633560b1606d2a5c6a5e88b8564852effb4c5d40427176e9dd045bde7"
+    },
+    {
+      "name": "data.tar.gz.part-025",
+      "bytes": 500000,
+      "sha256": "f20fea0eb24e4402b6e83c701ee3e320c285cf2612d7a9cae18f04defad15332"
+    },
+    {
+      "name": "data.tar.gz.part-026",
+      "bytes": 500000,
+      "sha256": "28b7ab8477d57f4955a64e6db93340098fd09809ca2873c412a46ab642b3d381"
+    },
+    {
+      "name": "data.tar.gz.part-027",
+      "bytes": 500000,
+      "sha256": "bc9dcb52eb20c57ad25835b67cc5ee89f731f937ebe5da8750c7c9e5f5ff3161"
+    },
+    {
+      "name": "data.tar.gz.part-028",
+      "bytes": 500000,
+      "sha256": "01fd0d4135b8041b462e4f4af0a37402f0ec92a44c90993940dcd891720c4959"
+    },
+    {
+      "name": "data.tar.gz.part-029",
+      "bytes": 500000,
+      "sha256": "44e70ff6ed02dc83b85edd35ba23451f4cd1f79f331718d37ec31eca2e5ed0e3"
+    },
+    {
+      "name": "data.tar.gz.part-030",
+      "bytes": 500000,
+      "sha256": "de176eb7000e54a578ff4afd6f52c30ae369b68e7f6ea469a87103f62eb7c459"
+    },
+    {
+      "name": "data.tar.gz.part-031",
+      "bytes": 500000,
+      "sha256": "d12a74e773089a2d175eef6602ca061e1c7784cce974ebc58cc31c95ad7cb691"
+    },
+    {
+      "name": "data.tar.gz.part-032",
+      "bytes": 500000,
+      "sha256": "e78c66f1672d5a4b5764f9aecbe2b43b3bd6b6257e7a9262f8e10f9f69f1d314"
+    },
+    {
+      "name": "data.tar.gz.part-033",
+      "bytes": 500000,
+      "sha256": "49cae6121f2da169b319f566d8f012764bf33e906105186b4cd248937fc4318f"
+    },
+    {
+      "name": "data.tar.gz.part-034",
+      "bytes": 500000,
+      "sha256": "ac7f60e4fa539ee4897c10d8d3d50e06ce7c4ba16f10015b1042adec92e6ec6a"
+    },
+    {
+      "name": "data.tar.gz.part-035",
+      "bytes": 500000,
+      "sha256": "ced2536f3701fe09ad2e71aca85d354b6969b7caa8b7dcbf9d11de3a3bb79438"
+    },
+    {
+      "name": "data.tar.gz.part-036",
+      "bytes": 500000,
+      "sha256": "2bb0a7a1a0720f17ae7279f9145bd40f753e6d5eb9dbe497bb5b7204abdc8bd2"
+    },
+    {
+      "name": "data.tar.gz.part-037",
+      "bytes": 500000,
+      "sha256": "2c517efa611b4d44a78a44fba35fec5d034ebe1968f8e8e4abdf358867f10f55"
+    },
+    {
+      "name": "data.tar.gz.part-038",
+      "bytes": 500000,
+      "sha256": "bb0d6c5ef4391c190d007be8ed86e7390ddf5f172199089b9f841153bd636e92"
+    },
+    {
+      "name": "data.tar.gz.part-039",
+      "bytes": 500000,
+      "sha256": "8cf08aa55f10d05757f597d9d70c99161d082310cffa377a134d92c5e80bdba5"
+    },
+    {
+      "name": "data.tar.gz.part-040",
+      "bytes": 500000,
+      "sha256": "9612e3bee99798e03193a8cc9f90c22ee22fa09672048e3ab0b0407d8e97d945"
+    },
+    {
+      "name": "data.tar.gz.part-041",
+      "bytes": 500000,
+      "sha256": "6a5cfb04e6d1e9f8de49c1ba51a61a551b34a9fdd089019783dba37fca006913"
+    },
+    {
+      "name": "data.tar.gz.part-042",
+      "bytes": 500000,
+      "sha256": "665738f58c3fb21b2c356097846447e5f5c63624a79970a504599b559cdfdf48"
+    },
+    {
+      "name": "data.tar.gz.part-043",
+      "bytes": 407197,
+      "sha256": "533c18cd84db4f716d09b38e8f0f6866802efcb577dd825c74f69e3bf694cbae"
+    }
+  ],
+  "files": [
+    {
+      "path": "analysis/geography.json",
+      "bytes": 1730369,
+      "sha256": "bc878250a8e22ffc8cf96a1af1766150fb334f110e71b6f533879bd6e5a42d57"
+    },
+    {
+      "path": "analysis/summary.json",
+      "bytes": 230929,
+      "sha256": "55b51fd6c2935573b92301ade50be0637aba35e99166cdebd56f4e3655bae312"
+    },
+    {
+      "path": "build-summary.json",
+      "bytes": 751,
+      "sha256": "a26b9a63b485ec7eeba3b2cea84954c9b9e0d970d2b61855c6c0f959ccfe1c52"
+    },
+    {
+      "path": "corridor.json",
+      "bytes": 48168,
+      "sha256": "33d7f15c5da51086983edbe358ea3ee794a074a9832d8327f2ddb1dafe719bb6"
+    },
+    {
+      "path": "data-coverage.geojson",
+      "bytes": 117110,
+      "sha256": "a7f6e148c4def821ce68bebb0736d5b6cfbb44c2e2ba6c79ed8b86cd4a52b869"
+    },
+    {
+      "path": "data-readiness.json",
+      "bytes": 6733,
+      "sha256": "4d35c47e8d472b0510b77348eb750430907db2ea3f8370cdef73a34153bec2af"
+    },
+    {
+      "path": "district-geometries.json",
+      "bytes": 264931,
+      "sha256": "e30c5be718639cf33a94278b2fb0461eb5da45dac6551304965603308fe3ec40"
+    },
+    {
+      "path": "downloads/TK_QGIS_Refresh_2_0_1.py",
+      "bytes": 431971,
+      "sha256": "a71754f12137418276d301806b4bd992097f0835ef004e458af032a7556e1f20"
+    },
+    {
+      "path": "downloads/gsw-native-occurrence_60E_40N_v1_5_2024.tif",
+      "bytes": 364320,
+      "sha256": "cbdf834f067270c081d2c15b4c3f140339c85efc05efcc2db0bdb4d76c009b31"
+    },
+    {
+      "path": "downloads/gsw-native-occurrence_60E_50N_v1_5_2024.tif",
+      "bytes": 2553680,
+      "sha256": "f22c05a3997406a7cfba4ac35d2f45e36547685655ba1db429236e540a917e2f"
+    },
+    {
+      "path": "downloads/gsw-native-occurrence_70E_40N_v1_5_2024.tif",
+      "bytes": 701373,
+      "sha256": "e7a63823703d170c290e72f4762395c7a1c402f8d7c667b3aaebc820feada9f8"
+    },
+    {
+      "path": "downloads/gsw-native-occurrence_70E_50N_v1_5_2024.tif",
+      "bytes": 3046460,
+      "sha256": "317a49a80d2cd8c14ebd1f3791a39ed4cb9e05b65d9e4630a2017b656dcec0d2"
+    },
+    {
+      "path": "downloads/gsw-native-seasonality_60E_40N_v1_5_2024.tif",
+      "bytes": 205252,
+      "sha256": "f381d6a73700de12dadc1bc31def4887516bf77f337167c319bd5d9adbbe6074"
+    },
+    {
+      "path": "downloads/gsw-native-seasonality_60E_50N_v1_5_2024.tif",
+      "bytes": 760248,
+      "sha256": "7ec524619568b2843c6afd7b39acd6df529e316ca35d62af4101cf9a11a7a5c8"
+    },
+    {
+      "path": "downloads/gsw-native-seasonality_70E_40N_v1_5_2024.tif",
+      "bytes": 358119,
+      "sha256": "5dab1dd2fed1cdfaf9b057ebcdced4ed867c1259d7651cd42f559d710e56b318"
+    },
+    {
+      "path": "downloads/gsw-native-seasonality_70E_50N_v1_5_2024.tif",
+      "bytes": 476477,
+      "sha256": "c623484c10c47129262535f43aba627e9177f7418190bc81a55a5f76f5975249"
+    },
+    {
+      "path": "downloads/healthcare-5km.csv",
+      "bytes": 678471,
+      "sha256": "164311be3d4f231fca6c11bcc15e883f360ab1f2038c1b22a0d3fc73c64bd698"
+    },
+    {
+      "path": "downloads/iati-borderlands-source-records.zip",
+      "bytes": 1925441,
+      "sha256": "0bedd57a4c48cad9df356c0293d33490f0245ed04212014e34a451cdb2ff212e"
+    },
+    {
+      "path": "downloads/iati-project-register.csv",
+      "bytes": 6301916,
+      "sha256": "a4f74e2a7a240dc5feb18c3c3eba00626c6b33af1f891c5177b91dd500b36a21"
+    },
+    {
+      "path": "downloads/map-friction-motor-2019.tif",
+      "bytes": 503317,
+      "sha256": "74023614446433dbd21d4ccaafce17ce16e97d62985bdb774b6a41367f6f74c8"
+    },
+    {
+      "path": "downloads/map-friction-walk-2019.tif",
+      "bytes": 490645,
+      "sha256": "fcd75254819a01351e49a33372726f00a4be51fb2364ff3ac4d5ade2f0db082d"
+    },
+    {
+      "path": "downloads/map-healthcare-motor-2019.tif",
+      "bytes": 715686,
+      "sha256": "14c60dc40dd4cff6506795c4e71e1f7b4f7db0389416520b3a25633213804a99"
+    },
+    {
+      "path": "downloads/map-healthcare-walk-2019.tif",
+      "bytes": 294482,
+      "sha256": "6e2687f3fe49162e53115c2d9b2c735e7bdc3ed6104aa7e43c0949aa2d246a8c"
+    },
+    {
+      "path": "downloads/rain2025-chirps-v3.tif",
+      "bytes": 18271,
+      "sha256": "e35fe4a17466ed3de635621e52434c0fef3e347ca0d2a634fd236aa851c00983"
+    },
+    {
+      "path": "downloads/rain202609-chirps-v3.tif",
+      "bytes": 18879,
+      "sha256": "1bafa0a2d6d747819efb27b095a2e2189b4e81a876cb3a834858595f6769da39"
+    },
+    {
+      "path": "downloads/surface-water-5km.csv",
+      "bytes": 187563,
+      "sha256": "5a07903e63519e15b45c284ea3ded11db5c46e540a4c233aab3af77d429c58ed"
+    },
+    {
+      "path": "downloads/urban-centre-footprints-2025.geojson",
+      "bytes": 12228,
+      "sha256": "4298f2d0ecc4a34ad01a2a901464f9cb7f0106fa1b0d2451530ba38847e5000b"
+    },
+    {
+      "path": "downloads/urban-centres-2025.csv",
+      "bytes": 2608,
+      "sha256": "a5e1fac9c6eeb809401259ff5ea25170fab93e6d5883c3555772a14c662a1907"
+    },
+    {
+      "path": "healthcare-provenance.json",
+      "bytes": 4957,
+      "sha256": "4ba937487189eef60d29d9b03f567de841496aa465ffde314de81893a30cc087"
+    },
+    {
+      "path": "hex-grid.json",
+      "bytes": 684,
+      "sha256": "d0ff9c3b98d6897feccc62f0383d454b638cadc9ea6366dffa303e734418a2c7"
+    },
+    {
+      "path": "iati-provenance.json",
+      "bytes": 2851,
+      "sha256": "d04fb0d0ee3a35a47c4433375aed5e3fd73307ae4abb74a0475fc7363416efbb"
+    },
+    {
+      "path": "local-connectivity/summary.json",
+      "bytes": 15286,
+      "sha256": "51b37622ecc3957e8ab617fd4fc1c82c82ef41302ee00095cfa1358abd501c98"
+    },
+    {
+      "path": "local-connectivity/tk_borderlands.json.gz",
+      "bytes": 115586,
+      "sha256": "1a6d577fe15d4e273d47fa0daa4c688d139021ed264d2fdf7143a793cb67fb20"
+    },
+    {
+      "path": "local-connectivity/tk_borderlands.zip",
+      "bytes": 379591,
+      "sha256": "88f8b3287db016c86686e2bd1d0f15d6d55b236da92a8e8df46aec0e6da9192a"
+    },
+    {
+      "path": "primary-road-population.json",
+      "bytes": 2609,
+      "sha256": "f992732e82acc3dcf1c2247d4ddfacef5c9b9541d7671baa887a2297363c5901"
+    },
+    {
+      "path": "programme-sites-template.csv",
+      "bytes": 212,
+      "sha256": "e976c820180b3275aeef953a2cee5ff07cad812b847384d45960b90054028bc5"
+    },
+    {
+      "path": "programme-study-area.geojson",
+      "bytes": 222661,
+      "sha256": "3346fc40d87edbb8942b6b7a1d6757ffbddf19cdb39db55b8ff18bd20cb6ed49"
+    },
+    {
+      "path": "rainfall-provenance.json",
+      "bytes": 942,
+      "sha256": "559439f9e61760fdd0427a5be573b2b4df79b33e54deaa27176800f8930dcf1e"
+    },
+    {
+      "path": "reference-borders.geojson",
+      "bytes": 414951,
+      "sha256": "df1fb35f5eaad7b2f5822cecff839de10fdfcf7e6ba57821623341cb31e2583b"
+    },
+    {
+      "path": "scope-comparison.json",
+      "bytes": 284,
+      "sha256": "a8936f4c27f73ea6535b08240893319b7b4e3fec30ee002dd952a05fce85c174"
+    },
+    {
+      "path": "scope-definition.json",
+      "bytes": 2338,
+      "sha256": "e0d86291f8f366352cd3145b45f64743a0cd0b8588abd9a8b661dfc222ab63bd"
+    },
+    {
+      "path": "shared/built2000.png",
+      "bytes": 124149,
+      "sha256": "d20598af196c88da1f7b370b94796b3b1d2876fa092645c03de7347178c7490d"
+    },
+    {
+      "path": "shared/built2020.png",
+      "bytes": 144766,
+      "sha256": "9c35b8e4c0f627ed9d59312db8049df931d0b069a09f37e63bee7238ee69292f"
+    },
+    {
+      "path": "shared/builtChange.png",
+      "bytes": 152486,
+      "sha256": "780fd23be2a32923b8ebc3e0a70e2e8e7e74b1a3c3a3fcb64e07e2ff9259fe3d"
+    },
+    {
+      "path": "shared/builtNight.png",
+      "bytes": 76899,
+      "sha256": "2644319ca721575e33dc148a22872079af2501d80c8424aa85c02d6ae9f9fb3d"
+    },
+    {
+      "path": "shared/grdi.png",
+      "bytes": 9002,
+      "sha256": "7b047ee43edce8b5ef8f0f66c22cdfda90391182d2350be9021d66722f7fb9b6"
+    },
+    {
+      "path": "shared/population.png",
+      "bytes": 119850,
+      "sha256": "ee5ca67225755dce0fb8e6cb9ca790bf32d50c4cf2be7dada67889ef34008059"
+    },
+    {
+      "path": "shared/rain2025.png",
+      "bytes": 16792,
+      "sha256": "32798712a176b9f7fb9ceedc5bb0b9d09850b508e996d9d36397c6575496a767"
+    },
+    {
+      "path": "shared/rain202609.png",
+      "bytes": 15044,
+      "sha256": "f712bcfc4d46a5de9b7de421bb6d9d6d0b0c107e59f5560d077fdc7e0d887c46"
+    },
+    {
+      "path": "shared/waterOccurrence.png",
+      "bytes": 45483,
+      "sha256": "c4ba99f86ad7daf8698878cff6d9b2d283f2b8bc2582dd46ea5a3129177d3456"
+    },
+    {
+      "path": "shared/waterSeasonality.png",
+      "bytes": 26935,
+      "sha256": "475f0f4399eb4ca8268e123aecc8e23887e39f2514fdd23c149d4aa52d1215b1"
+    },
+    {
+      "path": "study-area.geojson",
+      "bytes": 117110,
+      "sha256": "a7f6e148c4def821ce68bebb0736d5b6cfbb44c2e2ba6c79ed8b86cd4a52b869"
+    },
+    {
+      "path": "study.json",
+      "bytes": 66890,
+      "sha256": "7721d360da98dbbc7602f1cc34994941af9fbd1181aab1c096f7b5f4ba00cd81"
+    },
+    {
+      "path": "tk_borderlands/acled.json",
+      "bytes": 658407,
+      "sha256": "c651b036f8b60e398bfe084cb46fb49ca7cd6d115137657fb13cd27495d4550e"
+    },
+    {
+      "path": "tk_borderlands/admin.json",
+      "bytes": 204615,
+      "sha256": "5dc391144c0dae83b75307ac6eb243fdd0d087d79460e7d229f872b598424e0d"
+    },
+    {
+      "path": "tk_borderlands/connectivity.json",
+      "bytes": 3498203,
+      "sha256": "e7cc35676d4ca447b3b52ddc5288b82ee0c4bdf99c458f051821c22682a0d7ee"
+    },
+    {
+      "path": "tk_borderlands/core.json",
+      "bytes": 727913,
+      "sha256": "51288fcbf2252e43a77391c374afbdd018cea9e3127b23ec5a34af15e5267ceb"
+    },
+    {
+      "path": "tk_borderlands/corridorBand.json",
+      "bytes": 638779,
+      "sha256": "af093eeb3f0bb4f721d4b9828b82a645ddb5c36c5e6d40faed7915a777ad7c6c"
+    },
+    {
+      "path": "tk_borderlands/crossings.json",
+      "bytes": 30874,
+      "sha256": "826a8bb953bef6d5a235a42c0b5e757383892b07bfd595f8ca9cfa2d174198e0"
+    },
+    {
+      "path": "tk_borderlands/grdiHex.json",
+      "bytes": 981947,
+      "sha256": "e09c5844c513c62cb3811b5fa65d7ddd0a94dacf8d02d312dbb64760b53e7fb4"
+    },
+    {
+      "path": "tk_borderlands/hexes.json",
+      "bytes": 7063930,
+      "sha256": "ed68a5e97a73ecc74d6f5659799a11cc6f7b80f2827fac44fe47c9db9b2f00e2"
+    },
+    {
+      "path": "tk_borderlands/infrastructure.json",
+      "bytes": 301365,
+      "sha256": "8ad2b4ba6dcde1121e24f02e64e860e1389e54790a7fa8a5017223cc32dbb65a"
+    },
+    {
+      "path": "tk_borderlands/minorRoads.json",
+      "bytes": 19838148,
+      "sha256": "5ab6e6c99db07484c06bce4c0cc435f03c279af06b20cfee97da55f8220d7ce6"
+    },
+    {
+      "path": "tk_borderlands/project_context.json",
+      "bytes": 227,
+      "sha256": "a723f87af5614b2e4ea1fdd67c1e3a17b0ff2a8c4f6e090161484aa30e3755cc"
+    },
+    {
+      "path": "tk_borderlands/project_context_00.json",
+      "bytes": 4193897,
+      "sha256": "881379f59442b91477e71acfdb06cb90eb866e184157f413c657e3ba82c44fbc"
+    },
+    {
+      "path": "tk_borderlands/project_context_01.json",
+      "bytes": 4189230,
+      "sha256": "2de6a140dc8562e0fb367c3c1a6336e6f81853d35cfb5a659a12a9427f3d0d53"
+    },
+    {
+      "path": "tk_borderlands/project_context_02.json",
+      "bytes": 4193822,
+      "sha256": "2a3c7f8d47f7c138f3ed1c4a7f8080d017d7ab06add6a2b722c5e4b9bfc41a8d"
+    },
+    {
+      "path": "tk_borderlands/project_context_03.json",
+      "bytes": 4192295,
+      "sha256": "50b78e1bb5689d41ef0a55d3c48a66de7dc5ba5cbfc6be5382a6688a5a8edd28"
+    },
+    {
+      "path": "tk_borderlands/project_context_04.json",
+      "bytes": 4192498,
+      "sha256": "fb28204c4d198acdce51f46b2326d764bb8698b7cfa3631457ba29b768bbf67b"
+    },
+    {
+      "path": "tk_borderlands/project_context_05.json",
+      "bytes": 4194094,
+      "sha256": "f3ef2f7a84f0aba749818e1596a75ec07721f9715acdb69df44d93f85a785a71"
+    },
+    {
+      "path": "tk_borderlands/project_context_06.json",
+      "bytes": 4191487,
+      "sha256": "38e78bc5cd864ac6baff50a33604dd01c6410a4a548fab368691a20be839fce0"
+    },
+    {
+      "path": "tk_borderlands/project_context_07.json",
+      "bytes": 729790,
+      "sha256": "73d870c9033dab8097f4633b0796ae4501dc8d1f779cae0b595b4b1d5b7f6b8f"
+    },
+    {
+      "path": "tk_borderlands/projects.json",
+      "bytes": 3253720,
+      "sha256": "24f3a0cd68731c698c23a8f4b52a317b274be951f0415e1479c8f34240076b6d"
+    },
+    {
+      "path": "tk_borderlands/roads.json",
+      "bytes": 1619763,
+      "sha256": "42632aeebbfa11e3dbc142cb771da2c4aa054cac9b8dc905f2e94300a273bfe6"
+    },
+    {
+      "path": "tk_borderlands/sedac.json",
+      "bytes": 1407183,
+      "sha256": "17eaec9251e7115ce28f0bccd52e978b36215b3e6276c58452dd0e0f9d481fb4"
+    },
+    {
+      "path": "tk_borderlands/services.json",
+      "bytes": 418698,
+      "sha256": "34fc39ebd8ec321d59d622d369843c5cfc347ca8acd1981db5d53629308a6a54"
+    },
+    {
+      "path": "tk_borderlands/towns.json",
+      "bytes": 14296,
+      "sha256": "26462187c56856796e460cd5824082e7029da1968dda92bda54162dc8a216b82"
+    },
+    {
+      "path": "tk_borderlands/urbanCentres.json",
+      "bytes": 22901,
+      "sha256": "2b853762da1c263ac872a4f309eaa61240245c4c9518af6e62f2ffc9dac5bd77"
+    },
+    {
+      "path": "urban-centres-provenance.json",
+      "bytes": 1066,
+      "sha256": "0471651e1d841dfc96cae6b7776a9761c59247575fafdd6b5d072307c2ea63a2"
+    },
+    {
+      "path": "water-provenance.json",
+      "bytes": 4990,
+      "sha256": "e303b34e5837110965ce07b4d3e27742e3cff2bffa98fab7fffb1129594c1829"
+    }
+  ]
+}

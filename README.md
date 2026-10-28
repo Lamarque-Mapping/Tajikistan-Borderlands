@@ -6,11 +6,11 @@ The site covers Sughd, Batken, Nookat and the Osh approach, with a shared map an
 
 ## Publishing
 
-GitHub Pages is published by `.github/workflows/pages.yml` from `dist/` whenever `main` changes. The repository Pages source must be **GitHub Actions**. No build step is required.
+GitHub Pages is published by `.github/workflows/pages.yml` from `dist/` whenever `main` changes. The repository Pages source must be **GitHub Actions**. The workflow restores the bundled map data, then publishes the static site.
 
 ## Files and local preview
 
-All browser code, bundled libraries, processed datasets and downloads are in `dist/`. Serve that folder with an HTTP server, for example `python3 -m http.server 8000 --directory dist`, then open `http://localhost:8000/`.
+Browser code and libraries are in `dist/`. Processed datasets and downloads are stored in compressed parts under `site-data/` to keep transfers manageable. Run `python3 scripts/prepare_site.py` to verify and restore them into `dist/data/`. Serve that folder with an HTTP server, for example `python3 -m http.server 8000 --directory dist`, then open `http://localhost:8000/`.
 
 The application uses relative asset paths so it works under a GitHub Pages project path. Source and method notes are available inside the site. Population estimates refer to the portions of districts within the study, not whole-district census totals. National boundaries are an OpenStreetMap cartographic reference; the display trims distant extensions without changing the source boundary network or analytical geography.
 

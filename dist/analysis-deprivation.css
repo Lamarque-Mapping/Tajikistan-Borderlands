@@ -1,0 +1,5 @@
+.deprivation-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.deprivation-stat{min-width:0;padding:14px 16px;border:1px solid #dce4eb;border-radius:7px;background:#f3f6f8}
+.deprivation-stat dt{min-height:2.8em;font-size:13px;line-height:1.4;color:#597184}
+.deprivation-stat dd{margin:8px 0 0;font-size:27px;font-weight:600;line-height:1.2;color:#26475e;font-variant-numeric:tabular-nums}
+@media(max-width:700px){.deprivation-summary{grid-template-columns:minmax(0,1fr)}.deprivation-stat dt{min-height:0}}
