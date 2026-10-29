@@ -144,9 +144,10 @@ function refreshScope(reset=false){
  if(reset)state.acledUnit=state.country?(allUnits.find(u=>u.level==='country'&&u.clusterCode===state.cluster&&u.country===state.country)?.key||''):(clusters.find(u=>u.clusterCode===state.cluster)?.key||'');
  $('countryGroup').hidden=state.level==='cluster';
  const fallback=units().filter(u=>u.level==='district'&&u.adminLevel===2).length;
- $('scopeNote').textContent=state.level==='cluster'?'Population, land cover, settlement, rainfall, water and healthcare charts summarise the whole study area. Recorded events retain their labelled scope.':state.level==='country'?'Country portions inside the study extent.':'District portions inside the study extent.'+(fallback?' '+fallback+' areas use supplied Admin 2 boundaries. Source polygons may overlap; district totals are not additive.':'');
+ $('scopeNote').textContent=state.level==='cluster'?'Population, deprivation, land cover, settlement, rainfall, water and healthcare charts summarise the whole study area. Recorded events retain their labelled scope.':state.level==='country'?'Country portions inside the study extent.':'District portions inside the study extent.'+(fallback?' '+fallback+' areas use supplied Admin 2 boundaries. Source polygons may overlap; district totals are not additive.':'');
  $('openMap').href='#map='+state.cluster;
  renderPopulation();renderLand();renderBuilt();renderRainfall();renderWater();renderHealth();fillAcled();fillProjects();
+ window.UNDPAnalysisScope={level:state.level,country:state.country,cluster:state.cluster};document.dispatchEvent(new CustomEvent('undp:analysis-scope',{detail:window.UNDPAnalysisScope}));
 }
 function fillCountries(){fillSelect($('countrySelect'),[['','All countries'],...allUnits.filter(u=>u.level==='country'&&u.clusterCode===state.cluster).map(u=>[u.country,u.country])],state.country);state.country=$('countrySelect').value;}
 fillSelect($('clusterSelect'),SUMMARY.map(s=>[s.code,short(s.title)]),state.cluster);fillCountries();

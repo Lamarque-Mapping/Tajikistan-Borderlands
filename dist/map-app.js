@@ -1181,7 +1181,7 @@ function environmentLegend(name){
 }
 
 // The map menu represents subjects. Display geometry is chosen within each subject.
-const environmentThemes={landCoverHex:'Land cover',rainfall:'Rainfall',surfaceWater:'Surface water',groundwater:'Groundwater',waterpoints:'Water points',climate:'River flood risk',heat:'Historical humid heat'};
+const environmentThemes={landCoverHex:'Land cover',rainfall:'Rainfall',surfaceWater:'Surface water',climate:'River flood risk'};
 let environmentTheme='landCoverHex';
 const transportThemes={crossings:'Towns & transport',corridorBand:'Population near primary roads',connectivity:'Local road connectivity',infrastructure:'Energy & infrastructure'};
 let transportTheme='crossings';
@@ -1190,7 +1190,7 @@ const themeChoices={
  population:[['population','Population · 5 km hexagons'],['raster','Population surface'],['deprivation','Deprivation · raster'],['deprivationHex','Deprivation · hexagons']],
  services:[['points','Mapped service locations'],['serviceCount','Service counts · 5 km hexagons']],
  acled:[['points','Individual events'],['acledEvents5y','Event counts · 5 km hexagons'],['acledFatalities5y','Reported fatalities · 5 km hexagons'],['persistence','Recurring events · 5 km hexagons']],
- access:[['travel','Mean travel times'],['coverage','Population access to healthcare'],['ruralAccess','Rural road access']],
+ access:[['travel','Mean travel times'],['coverage','Population access to healthcare']],
  builtup:[['nightLights','Night-time lights · 5 km hexagons'],['epochs','Settlement change · 2000–2020'],['builtUp','Built-up · 2018 · 5 km hexagons'],['raster','Built-up surface · 2018']]
 };
 function presetGroup(name){if(environmentThemes[name])return 'environment';if(transportThemes[name])return 'transport';if(name==='settlement')return 'builtup';return name;}
