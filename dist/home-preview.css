@@ -26,3 +26,12 @@
 .cluster-card{border-color:#bacddc}.cluster-card:hover,.cluster-card:focus-visible{box-shadow:0 12px 25px #123f681c}
 .card-copy h2{color:#173f60}.card-copy p,.outline-note,.site-footer{color:#617b90}
 .card-action{color:#176893}.site-footer a{border-color:#94aec2}
+
+/* Satellite capture: preserve country labels and the full study footprint. */
+.cluster-gallery .cluster-card[data-code="map"] .card-map{position:relative;display:block;padding:0;overflow:hidden;background:#18221e}
+.home-satellite-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.cluster-gallery .cluster-card[data-code="map"] .card-number{position:absolute;z-index:1;top:16px;left:18px;margin:0;padding:4px 7px;border-radius:3px;color:#fff;background:#10241dcc;text-shadow:0 1px 2px #000}
+.home-map-credit{position:absolute;bottom:0;left:0;right:0;padding:4px 7px;background:#14221e;color:#fff;font-size:9px;line-height:1.4;text-align:right}
+@media(max-width:650px){.cluster-gallery .cluster-card[data-code="map"] .card-map{height:auto;aspect-ratio:2/1}.home-satellite-image{position:absolute;inset:0}.cluster-gallery .cluster-card[data-code="map"] .card-number{top:10px;left:10px;font-size:9px}.home-map-credit{font-size:8px}}
+
+@media(min-width:651px) and (max-width:1000px){.home-satellite-image{object-fit:contain}}
