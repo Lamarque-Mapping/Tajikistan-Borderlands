@@ -5,9 +5,9 @@ const pt=a=>[(a[0]-b[0][1])*c*scale+x0,290-y0-(a[1]-b[0][0])*scale];
 function line(a,close=false){return a.map((p,i)=>(i?'L':'M')+pt(p).map(v=>v.toFixed(1)).join(',')).join('')+(close?'Z':'');}
 function path(g){if(g.type==='Polygon')return g.coordinates.map(a=>line(a,true)).join('');if(g.type==='MultiPolygon')return g.coordinates.flatMap(p=>p.map(a=>line(a,true))).join('');if(g.type==='LineString')return line(g.coordinates);if(g.type==='MultiLineString')return g.coordinates.map(a=>line(a)).join('');if(g.type==='GeometryCollection')return g.geometries.map(path).join('');return '';}
 function el(parent,tag,attrs,text){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,v);if(text)e.textContent=text;parent.appendChild(e);return e;}
-el(svg,'path',{d:study.features.map(f=>path(f.geometry)).join(''),fill:'#cfdfeb',stroke:'#6a8ba5','stroke-width':1});
-el(svg,'path',{d:roads.primaryRoads.features.map(f=>path(f.geometry)).join(''),fill:'none',stroke:'#7895aa','stroke-width':1,opacity:.75});
-for(const name of ['Khujand','Isfara','Batken','Osh']){const f=towns.towns.features.find(f=>f.properties.name===name);if(!f)continue;const [x,y]=pt(f.geometry.coordinates);el(svg,'circle',{cx:x,cy:y,r:3,fill:'#244e70'});el(svg,'text',{x:x+(name==='Isfara'?-6:6),y:y+(name==='Batken'?16:-6),fill:'#244e70','font-size':11,'text-anchor':name==='Isfara'?'end':'start'},name);}
+el(svg,'path',{d:study.features.map(f=>path(f.geometry)).join(''),fill:'#dce7db',stroke:'#6b8876','stroke-width':1});
+el(svg,'path',{d:roads.primaryRoads.features.map(f=>path(f.geometry)).join(''),fill:'none',stroke:'#a76b45','stroke-width':1,opacity:.75});
+for(const name of ['Khujand','Isfara','Batken','Osh']){const f=towns.towns.features.find(f=>f.properties.name===name);if(!f)continue;const [x,y]=pt(f.geometry.coordinates);el(svg,'circle',{cx:x,cy:y,r:3,fill:'#274d3d'});el(svg,'text',{x:x+(name==='Isfara'?-6:6),y:y+(name==='Batken'?16:-6),fill:'#274d3d','font-size':11,'text-anchor':name==='Isfara'?'end':'start'},name);}
 const chart=document.getElementById('preview-analysis');
 chart.className='population-preview';
 const title=document.createElement('div');title.className='preview-heading';title.innerHTML='<strong>Population</strong><span>Largest Tajik district populations · 2025</span>';chart.appendChild(title);
